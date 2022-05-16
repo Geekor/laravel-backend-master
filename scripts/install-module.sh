@@ -29,10 +29,10 @@ fi
 if [ ${RET} -eq 0 ]; then
     # 等 1 秒，保证【权限】表先创建
     sleep 1
-    php artisan vendor:publish --provider="Geekor\BackendMaster\MasterServiceProvider"
+    php artisan vendor:publish --provider="Geekor\BackendMaster\ServiceProvider"
     RET=$?
     echo " "
-    echo "-------- BM: publish geekor/backend-master provider done ------"
+    echo "-------- BM: publish geekor/laravel-backend-master provider done ------"
     echo " "
 fi
 

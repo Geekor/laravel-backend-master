@@ -1,6 +1,30 @@
 # laravel-backend-master
 
+本模块适合新建项目时快速配置后台 RESTful 相关的接口。
+## 如何使用？
 
+1. 新建项目 (目录名例如： bm-demo)
+
+```sh
+composer create-project laravel/laravel bm-demo --prefer-dist
+cd bm-demo
+```
+
+2. 修改 .env 文件，配置数据库连接信息。
+
+3. 安装依赖
+
+```sh
+composer require geekor/laravel-backend-master:*
+```
+
+上面的是安装 dev 版，也可以指定版本；
+
+4. 一键配置后台
+
+```sh
+./vendor/geekor/laravel-backend-master/scripts/install-module.sh
+```
 
 ## 其他说明
 本目录中的 composer.json 只用于发布到 packagelist 仓库中。
