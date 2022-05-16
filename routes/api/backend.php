@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use Geekor\BackendMaster\Http\Controllers\Api\Auth\AuthController;
+use Geekor\BackendMaster\Http\Controllers\Api\Auth\MasterAuthController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\MasterController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\RoleController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\PermissionController;
@@ -28,10 +29,10 @@ $API_PREFIX = config('bm.prefix', 'backend');
 | 用户认证  /api/backend/auth
 |--------------------------------------------------------------------------
 */
-Route::group(['prefix' => vsprintf('api/%s/auth',[$API_PREFIX])], function() {
+Route::group(['prefix' => vsprintf('/api/%s/auth',[$API_PREFIX])], function() {
 
     // 登入
-    Route::post('/login', AuthController::class.'@login');
+    Route::post('/login', MasterAuthController::class.'@login');
 
     // [认证后访问] ------------------------------------------
     Route::middleware('auth:master')->group(function(){
@@ -50,7 +51,7 @@ Route::group(['prefix' => vsprintf('api/%s/auth',[$API_PREFIX])], function() {
 |--------------------------------------------------------------------------
 */
 Route::group([
-    'prefix' => vsprintf('api/%s',[$API_PREFIX]),
+    'prefix' => vsprintf('/api/%s',[$API_PREFIX]),
     'middleware' => 'auth:master'
 ],function() {
 

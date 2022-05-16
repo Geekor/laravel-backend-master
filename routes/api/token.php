@@ -18,7 +18,7 @@ use Geekor\BackendMaster\Http\Controllers\Api\Auth\AuthController;
 */
 
 Route::group([
-    'prefix' => 'api',
+    'prefix' => '/api',
     'middleware' => 'auth:sanctum'
 ],function() {
 

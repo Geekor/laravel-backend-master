@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Geekor\BackendMaster\Http\Controllers\Api\Auth\NormalAuthController;
+use Geekor\BackendMaster\Http\Controllers\Api\Auth\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | 关于 guard 的一点说明
@@ -15,9 +18,21 @@ use Illuminate\Support\Facades\Route;
 | 那么如何获取 user guard 的 token？ 通过 users 表的 Model 生成 token;
 */
 
-Route::group([
-    'prefix' => 'api',
-    'middleware' => 'auth:user'
-],function() {
+Route::prefix('/api/auth')->group(function() {
 
+    //... 邮箱方式注册
+    Route::post('/email-register', NormalAuthController::class.'@register');
+
+    //... 邮箱方式登录
+    Route::post('/email-login', NormalAuthController::class.'@login');
+
+    // -------------------------------
+    Route::middleware('auth:user')->group(function() {
+
+        // 账户信息
+        Route::get('/info', AuthController::class.'@info');
+
+        // 登出
+        Route::delete('/me', AuthController::class.'@logout');
+    });
 });

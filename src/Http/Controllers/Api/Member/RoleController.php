@@ -87,7 +87,7 @@ class RoleController extends BaseController
                 $role->syncPermissions($perms);
             }
 
-            return Api::success_created();
+            return Api::successCreated();
         }
 
         return Api::failx500('database create role failed');

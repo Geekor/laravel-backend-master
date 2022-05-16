@@ -58,7 +58,7 @@ composer require geekor/laravel-backend-master:*
     'providers' => [
         //...
 
-        \Geekor\BackendMaster\MasterServiceProvider::class,
+        \Geekor\BackendMaster\BackendServiceProvider::class,
     ],
 
     //...
@@ -67,7 +67,7 @@ composer require geekor/laravel-backend-master:*
 3. 生成配置
 
 ```sh
-php artisan vendor:publish --provider="Geekor\BackendMaster\MasterServiceProvider"
+php artisan vendor:publish --provider="Geekor\BackendMaster\BackendServiceProvider"
 ```
 
 4. 更新缓存
@@ -93,7 +93,7 @@ php artisan bm:refresh  #重建数据库（慎用，此命令为不可见命令�
 ```
 更多命令可以自定查看 `src/Console/Commands/` 目录。
 
-注意： 添加自定义命令后，需要添加到 `src/MasterServiceProvider.php` 中的 `COMMANDS`.
+注意： 添加自定义命令后，需要添加到 `src/BackendServiceProvider.php` 中的 `COMMANDS`.
 
 
 

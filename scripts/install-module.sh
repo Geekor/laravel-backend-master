@@ -27,8 +27,6 @@ fi
 # ==== backend masters ====
 
 if [ ${RET} -eq 0 ]; then
-    # 等 1 秒，保证【权限】表先创建
-    sleep 1
     php artisan vendor:publish --provider="Geekor\BackendMaster\ServiceProvider"
     RET=$?
     echo " "

@@ -11,47 +11,6 @@ use Geekor\Core\Support\GkVerify;
 
 class AuthController extends BaseController
 {
-
-    /***
-     * 后台登录
-     */
-    public function login(Request $request)
-    {
-        /** 登录流程
-         * ------------------------
-         * [1] 检查输入参数是否符合要求
-         * [2] 检查用户是否已注册，密码是否正确
-         * [3] 创建 TOKEN
-         * [4] 返回结果
-         * ------------------------
-         */
-
-        //...[1]
-        if (GkVerify::checkRequestFailed($request, [
-            'username' => 'required',
-            'password' => 'required',
-            'device_name' => 'required',
-        ])) {
-            return Api::fail('缺少参数');
-        }
-
-        //...[2]
-        $user = Master::where('username', $request->username)->first();
-
-        if (! $user || ! GkVerify::checkHash($request->password, $user->password)) {
-            return Api::fail('帐号或密码错误');
-        }
-
-        //...[3]
-        $token = $user->createToken($request->device_name);
-
-        //...[4]
-        return Api::success([
-            'info' => $user,
-            'token' => $token->plainTextToken,
-        ]);
-    }
-
     /**
      * 用户登出
      */
@@ -60,12 +19,11 @@ class AuthController extends BaseController
         if ($token = $this->user()->currentAccessToken()) {
             $token->delete();
         }
-        return Api::success_deleted();
+        return Api::successDeleted();
     }
 
     public function info(Request $request)
     {
-        //TODO
         return $this->user();
     }
 
@@ -91,7 +49,7 @@ class AuthController extends BaseController
 
         $token = $request->user()->createToken($request->device_name);
 
-        return Api::success_created([
+        return Api::successCreated([
             'token' => $token->plainTextToken
         ]);
     }
@@ -110,7 +68,7 @@ class AuthController extends BaseController
     {
         if ($token = $request->user()->tokens()->where('id', $id)->first()) {
             if ($token->delete()) {
-                return Api::success_deleted();
+                return Api::successDeleted();
             }
         } else {
             return Api::fail('指定的 ID 不存在，又或者那个 ID 不是你的');
@@ -123,6 +81,6 @@ class AuthController extends BaseController
     {
         $request->user()->tokens()->delete();
 
-        return Api::success_deleted();
+        return Api::successDeleted();
     }
 }
