@@ -12,6 +12,7 @@ class ServiceProvider extends BaseServiceProvider
     private const COMMANDS = [
         Console\Commands\Check::class,
         Console\Commands\Fresh::class,
+        Console\Commands\MakeApiDoc::class,
         Console\Commands\ImportMasters::class,
         Console\Commands\ImportRoles::class,
     ];

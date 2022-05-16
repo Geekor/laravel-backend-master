@@ -29,10 +29,10 @@ composer require geekor/laravel-backend-master:*
 ## 其他说明
 本目录中的 composer.json 只用于发布到 packagist.org 仓库中。
 
-如果只是在本地简单的使用，在按下面步骤完成 1 和 2 后，直接在项目根目录使用脚本即可
+如果只是在本地简单的使用，在按下面步骤完成 1 和 2 后，直接在项目根目录运行下面的脚本即可：
 
 ```sh
-./_packages/geekor/backend-master/scripts/install-module.sh
+./_packages/geekor/laravel-backend-master/scripts/install-module.sh
 ```
 
 如不使用权限系统，可以不使用上面的脚本，手动完成下面的步骤
@@ -44,7 +44,7 @@ composer require geekor/laravel-backend-master:*
         "psr-4": {
             "App\\": "app/",
 
-            "Geekor\\BackendMaster\\": "_packages/geekor/backend-master/src/",
+            "Geekor\\BackendMaster\\": "_packages/geekor/laravel-backend-master/src/",
         }
     }
 }
@@ -58,7 +58,7 @@ composer require geekor/laravel-backend-master:*
     'providers' => [
         //...
 
-        \Geekor\BackendMaster\BackendServiceProvider::class,
+        \Geekor\BackendMaster\ServiceProvider::class,
     ],
 
     //...
@@ -67,7 +67,7 @@ composer require geekor/laravel-backend-master:*
 3. 生成配置
 
 ```sh
-php artisan vendor:publish --provider="Geekor\BackendMaster\BackendServiceProvider"
+php artisan vendor:publish --provider="Geekor\BackendMaster\ServiceProvider"
 ```
 
 4. 更新缓存
@@ -93,7 +93,7 @@ php artisan bm:refresh  #重建数据库（慎用，此命令为不可见命令�
 ```
 更多命令可以自定查看 `src/Console/Commands/` 目录。
 
-注意： 添加自定义命令后，需要添加到 `src/BackendServiceProvider.php` 中的 `COMMANDS`.
+注意： 添加自定义命令后，需要添加到 `src/ServiceProvider.php` 中的 `COMMANDS`.
 
 
 

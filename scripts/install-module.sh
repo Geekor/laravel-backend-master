@@ -7,7 +7,9 @@ RET=$?
 
 # ==== permissions ====
 
-if [ ${RET} -eq 0 ] && [ "$1" != '-x' ]; then
+echo " 使用 -i 参数可以安装「权限管理库」"
+
+if [ ${RET} -eq 0 ] && [ "$1" == "-i" ]; then
     composer require spatie/laravel-permission
     RET=$?
     echo " "
