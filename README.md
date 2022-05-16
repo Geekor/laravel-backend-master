@@ -27,7 +27,7 @@ composer require geekor/laravel-backend-master:*
 ```
 
 ## 其他说明
-本目录中的 composer.json 只用于发布到 packagelist 仓库中。
+本目录中的 composer.json 只用于发布到 packagist.org 仓库中。
 
 如果只是在本地简单的使用，在按下面步骤完成 1 和 2 后，直接在项目根目录使用脚本即可
 

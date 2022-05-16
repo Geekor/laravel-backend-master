@@ -84,10 +84,11 @@ class ServiceProvider extends BaseServiceProvider
 
             $arr = [];
             foreach ([
-                '100000_create_permission_extra_info.php',
-                '200000_create_backend_masters_table.php',
-                '300010_create_bans_table.php',
-                '300020_create_configures_table.php',
+                // 为了保住能顺利排序，最好从 250000 之后开始
+                '300000_create_permission_extra_info.php',
+                '400000_create_backend_masters_table.php',
+                '500010_create_bans_table.php',
+                '500020_create_configures_table.php',
             ] as $f) {
                 $arr[vsprintf('%s/../database/migrations/%s.stub',[__DIR__, $f])] = $this->getMigrationFileName($f);
             }
