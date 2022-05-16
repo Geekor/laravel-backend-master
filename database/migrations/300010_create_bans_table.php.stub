@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+/**
+ * 1. 新建 bans 表
+ * 2. 在 users 表中拓展 ban_id 列
+ */
+class CreateBansTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('bans', function (Blueprint $table) {
+            $table->unsignedTinyInteger('id')->unique();
+            $table->string('title');
+            $table->string('description')->nullable();
+            $table->string('color')->default('#409eff');
+
+            $table->primary('id');
+        });
+
+        //...
+        DB::table('bans')->insert([
+            [ 'id' => 0, 'title' => '正常', 'description' => '正常使用的状态', 'color' => '#4f952c' ],
+            [ 'id' => 1, 'title' => '禁用', 'description' => '账号被停用的状态', 'color' => '#f56c6c' ],
+            [ 'id' => 2, 'title' => '测试', 'description' => '测试账号', 'color' => '#e6a23c' ],
+            [ 'id' => 99, 'title' => '注销', 'description' => '账号已经注销', 'color' => '#909399' ],
+        ]);
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedTinyInteger('ban_id')->default(0)->after('password');
+
+            $table->foreign('ban_id')
+                ->references('id')
+                ->on('bans')
+                ->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('ban_id');
+        });
+
+        Schema::dropIfExists('bans');
+    }
+}

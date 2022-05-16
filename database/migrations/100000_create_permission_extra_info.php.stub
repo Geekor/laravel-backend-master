@@ -1,0 +1,54 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreatePermissionExtraInfo extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $tableNames = config('permission.table_names');
+
+        Schema::table($tableNames['roles'], function (Blueprint $table) {
+            $table->unsignedInteger('level')->default(1)->after('guard_name');
+            $table->string('title')->nullable()->after('level');
+            $table->string('description')->nullable()->after('title');
+            $table->unsignedTinyInteger('removable')->default(1)->after('description');
+        });
+
+        Schema::table($tableNames['permissions'], function (Blueprint $table) {
+            $table->string('title')->nullable()->after('guard_name');
+            $table->string('description')->nullable()->after('title');
+            $table->unsignedTinyInteger('removable')->default(1)->after('description');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $tableNames = config('permission.table_names');
+
+        Schema::table($tableNames['permissions'], function (Blueprint $table) {
+            $table->dropColumn('title');
+            $table->dropColumn('description');
+            $table->dropColumn('removable');
+        });
+
+        Schema::table($tableNames['roles'], function (Blueprint $table) {
+            $table->dropColumn('level');
+            $table->dropColumn('title');
+            $table->dropColumn('description');
+            $table->dropColumn('removable');
+        });
+    }
+}
