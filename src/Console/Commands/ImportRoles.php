@@ -4,7 +4,6 @@ namespace Geekor\BackendMaster\Console\Commands;
 
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 use Geekor\BackendMaster\Models\Role;
 use Geekor\BackendMaster\Models\Permission;
@@ -31,7 +30,7 @@ class ImportRoles extends Command
         $this->line(' ');
         $this->line(' # '.$this->signature);
         $this->line(' ');
-        
+
         //...必须想清空旧的权限缓存
         $this->call('permission:cache-reset');
 

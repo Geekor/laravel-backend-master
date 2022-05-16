@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use Geekor\BackendMaster\Models\Master;
 use Geekor\BackendMaster\Http\Controllers\Api\BaseController;
-use Geekor\Core\ApiEventConstant as Api;
+use Geekor\Core\Support\GkApi as Api;
 use Geekor\Core\Support\GkVerify;
 
 class AuthController extends BaseController

@@ -4,7 +4,6 @@ namespace Geekor\BackendMaster\Http\Traits;
 
 use Illuminate\Http\Request;
 
-use Geekor\Core\ApiEventConstant as Api;
 use Geekor\Core\Exceptions\InputException;
 use Geekor\Core\Support\GkVerify;
 
@@ -19,7 +18,7 @@ trait InputCheck
 
     /**
      * 获取分页信息
-     * 
+     *
      * @return limit 分页大小，
      * @return offset 开始位置
      */

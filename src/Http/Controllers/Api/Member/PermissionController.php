@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Geekor\BackendMaster\Models\Permission;
 use Geekor\BackendMaster\Http\Controllers\Api\BaseController;
 use Geekor\BackendMaster\Http\Traits\PermissionCheck;
-use Geekor\Core\ApiEventConstant as Api;
+use Geekor\Core\Support\GkApi as Api;
 
 class PermissionController extends BaseController
 {
     use PermissionCheck;
-    
+
     public function index(Request $request)
     {
         //...权限拦截

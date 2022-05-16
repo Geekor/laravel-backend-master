@@ -9,7 +9,7 @@ use Geekor\BackendMaster\Http\Controllers\Api\BaseController;
 use Geekor\BackendMaster\Models\Ban;
 use Geekor\BackendMaster\Models\Role;
 use Geekor\BackendMaster\Models\User;
-use Geekor\Core\ApiEventConstant as Api;
+use Geekor\Core\Support\GkApi as Api;
 
 class UserController extends BaseController
 {
@@ -17,7 +17,7 @@ class UserController extends BaseController
     {
         //...权限拦截
         $user = $this->getUserAndCheckHasPermission('master:user-b');
-       
+
         $data = [
             'bans' => Ban::all(),
             'roles' => Role::getSimpleUsers()

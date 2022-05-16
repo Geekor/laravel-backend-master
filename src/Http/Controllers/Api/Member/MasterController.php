@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use Geekor\BackendMaster\Http\Controllers\Api\BaseController;
 use Geekor\BackendMaster\Models\Master;
 use Geekor\BackendMaster\Models\Role;
-use Geekor\Core\ApiEventConstant as Api;
+use Geekor\Core\Support\GkApi as Api;
 
 class MasterController extends BaseController
 {

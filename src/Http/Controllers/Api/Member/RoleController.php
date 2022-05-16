@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Geekor\BackendMaster\Models\Role;
 use Geekor\BackendMaster\Models\Permission;
 use Geekor\BackendMaster\Http\Controllers\Api\BaseController;
-use Geekor\Core\ApiEventConstant as Api;
+use Geekor\Core\Support\GkApi as Api;
 
 class RoleController extends BaseController
 {
