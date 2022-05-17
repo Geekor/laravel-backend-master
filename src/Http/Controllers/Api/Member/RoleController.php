@@ -64,7 +64,7 @@ class RoleController extends BaseController
             ]);
         }
 
-        return Api::failx404('role not found');
+        return Api::failxNotFound('role not found');
     }
 
     public function store(Request $request)
@@ -90,7 +90,7 @@ class RoleController extends BaseController
             return Api::successCreated();
         }
 
-        return Api::failx500('database create role failed');
+        return Api::failxServerError('database create role failed');
     }
 
     public function update(Request $request, $id)
@@ -115,7 +115,7 @@ class RoleController extends BaseController
             return Api::success();
         }
 
-        return Api::failx404('role not found');
+        return Api::failxNotFound('role not found');
     }
 
     public function roleOptions(Request $request)

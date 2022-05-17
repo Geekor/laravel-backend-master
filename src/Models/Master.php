@@ -6,13 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
 use Spatie\Permission\Traits\HasRoles;
+
+use Geekor\BackendMaster\Database\Factories\MasterFactory;
 
 class Master extends Authenticatable
 {
     use HasRoles;
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected static function newFactory()
+    {
+        // 重载 HasFactory 中的 newFactory()
+        // 以便使用 User::factory() 时，得到正确的 UserFactory
+        
+        return MasterFactory::new();
+    }
+
+    public function createPlainTextToken($device_name)
+    {
+        return $this->createToken($device_name)->plainTextToken;
+    }
 
     /**
      * Spatie\Permission 模块需要用到
