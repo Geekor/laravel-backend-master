@@ -10,7 +10,7 @@ class Fresh extends Command
 
     protected $signature = 'bm:fresh';
     protected $description = 'Geekor Backend Master 完全重置数据库';
-    
+
     public function __construct()
     {
         parent::__construct();
@@ -23,22 +23,22 @@ class Fresh extends Command
      */
     public function handle()
     {
-        $this->line(' ');
+        $this->newLine();
         $this->line(' # '.$this->signature);
-        $this->line(' ');
-        
-        if ('y' === $yn = $this->ask('This will reset your database, sure? y/n', 'n')) {
+        $this->newLine();
+
+        if ($this->confirm('This will reset your database, sure?', false)) {
             $this->call('migrate:fresh');
 
             // 必须先导入角色信息，后续才能在创建用户时分配角色/权限
             $this->call('bm:import-roles');
 
             $this->call('bm:import-masters');
-            
+
 
         } else {
             $this->info(' > You have saved the world!');
-            $this->info(' ');
+            $this->newLine();
         }
 
     }

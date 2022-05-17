@@ -5,18 +5,10 @@ namespace Geekor\BackendMaster;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class ServiceProvider extends BaseServiceProvider
 {
-    // 用于注册命令行命令
-    private const COMMANDS = [
-        Console\Commands\Check::class,
-        Console\Commands\Fresh::class,
-        Console\Commands\MakeApiDoc::class,
-        Console\Commands\ImportMasters::class,
-        Console\Commands\ImportRoles::class,
-    ];
-
     /**
      * Register services.
      *
@@ -104,7 +96,7 @@ class ServiceProvider extends BaseServiceProvider
                 __DIR__.'/../config/bm_masters.php' => config_path('bm_masters.php'),
             ], 'bm-configs');
 
-            $this->commands(self::COMMANDS);
+            $this->loadCommands();
         }
 
         $this->defineRoutes();
@@ -129,7 +121,7 @@ class ServiceProvider extends BaseServiceProvider
      *
      * @return string
      */
-    protected function getMigrationFileName($migrationFileName): string
+    protected function getMigrationFileName($migrationFileName)
     {
         $timestamp = date('Y_m_d');
 
@@ -141,6 +133,48 @@ class ServiceProvider extends BaseServiceProvider
             })
             ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
             ->first();
+    }
+
+    protected function loadCommands()
+    {
+        // 用于注册命令行命令（手动填写的方式）
+        // $this->commands([
+        //     Console\Commands\Check::class,
+        //     Console\Commands\Fresh::class,
+        //     Console\Commands\MakeApiDoc::class,
+        //     Console\Commands\ImportMasters::class,
+        //     Console\Commands\ImportRoles::class,
+        // ]);
+
+        // --------------------------- 自动扫描目录中的命令 ----
+        // [1] 扫描出 php 文件
+        // [2] 把 .../Commands/Check.php 转换成 Geekor\BackendMaster\Console\Commands\Check 的形式
+        // [3] 注册
+        $dir = '/Console/Commands/';
+        $path = __DIR__.$dir;
+
+        // [1]
+        $fs = $this->app->make(Filesystem::class);
+        $list = $fs->glob($path.'*.php');
+
+        if (count($list) > 0) {
+            $cmds = [];
+            $tmp = [];
+
+            // [2]
+            foreach ($list as $txt) {
+                $tmp = substr($txt, strrpos($txt, '/')+1);
+                $tmp = substr($tmp, 0, strrpos($tmp, '.'));
+                $cmds[] = vsprintf('%s%s%s', [
+                    __NAMESPACE__,
+                    str_replace('/', '\\', $dir),
+                    $tmp
+                ]);
+            }
+
+            // [3]
+            $this->commands($cmds);
+        }
     }
 
     /**

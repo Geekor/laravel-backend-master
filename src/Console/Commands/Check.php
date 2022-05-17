@@ -8,7 +8,7 @@ class Check extends Command
 {
     protected $signature = 'bm:check';
     protected $description = 'Geekor Backend Master state check';
-    
+
     public function __construct()
     {
         parent::__construct();
@@ -21,12 +21,12 @@ class Check extends Command
      */
     public function handle()
     {
-        $this->line(' ');
+        $this->newLine();
         $this->line(' # '.$this->signature);
-        $this->line(' ');
-        
+        $this->newLine();
+
         var_dump(config('auth.providers'));
-        
+
         $this->info(' hi, logico! ');
     }
 }

@@ -27,15 +27,15 @@ class ImportRoles extends Command
      */
     public function handle()
     {
-        $this->line(' ');
+        $this->newLine();
         $this->line(' # '.$this->signature);
-        $this->line(' ');
+        $this->newLine();
 
         //...必须想清空旧的权限缓存
         $this->call('permission:cache-reset');
 
         //...导入权限列表
-        $this->info("");
+        $this->newLine();
         $this->info('import table: permissions');
         PermissionAssistant::importPermissionsToDatabase();
 

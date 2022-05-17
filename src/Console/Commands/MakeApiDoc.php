@@ -21,9 +21,9 @@ class MakeApiDoc extends Command
      */
     public function handle()
     {
-        $this->line(' ');
+        $this->newLine();
         $this->line(' # '.$this->signature);
-        $this->line(' ');
+        $this->newLine();
 
         // var_dump(config('auth.providers'));
         // var_dump(__DIR__);
