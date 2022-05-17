@@ -32,14 +32,14 @@ class MasterAuthController extends BaseController
             'password' => 'required',
             'device_name' => 'required',
         ])) {
-            return Api::fail('缺少参数');
+            return Api::failx(Api::API_PARAM_MISS,'缺少参数');
         }
 
         //...[2]
         $user = Master::where('username', $request->username)->first();
 
         if (! $user || ! GkVerify::checkHash($request->password, $user->password)) {
-            return Api::fail('帐号或密码错误');
+            return Api::failx(Api::API_PARAM_ERROR, '帐号或密码错误');
         }
 
         //...[3]

@@ -102,6 +102,8 @@ class ServiceProvider extends BaseServiceProvider
         $this->defineRoutes();
         $this->configureGuard();
         $this->configureMiddleware();
+
+        $this->configureFactories();
     }
 
     /**
@@ -243,5 +245,10 @@ class ServiceProvider extends BaseServiceProvider
         // $kernel = app()->make(Kernel::class);
 
         // $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
+    }
+
+    protected function configureFactories()
+    {
+        // $this->loadFactoriesFrom(__DIR__.'/../database/factories/');
     }
 }
