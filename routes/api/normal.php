@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 use Geekor\BackendMaster\Http\Controllers\Api\Auth\NormalAuthController;
-use Geekor\BackendMaster\Http\Controllers\Api\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +29,9 @@ Route::prefix('/api/auth')->group(function() {
     Route::middleware('auth:user')->group(function() {
 
         // 账户信息
-        Route::get('/info', AuthController::class.'@info');
+        Route::get('/info', NormalAuthController::class.'@info');
 
         // 登出
-        Route::delete('/me', AuthController::class.'@logout');
+        Route::delete('/me', NormalAuthController::class.'@logout');
     });
 });

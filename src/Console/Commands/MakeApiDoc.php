@@ -30,12 +30,12 @@ class MakeApiDoc extends Command
         // var_dump(public_path('apidoc'));
         // var_dump(public_path('storage'));
 
-        $apidoc_path = public_path('apidoc/bm');
+        $apidoc_path = public_path('apidoc/v1');
         if (! is_dir($apidoc_path)) {
             mkdir($apidoc_path, 0644, true);
 
             if (! is_dir($apidoc_path)) {
-                $this->error(' >>> 创建 apidoc/bm 目录失败，你需要在 public 目录手动创建它');
+                $this->error(' >>> 创建 apidoc/v1 目录失败，你需要在 public 目录手动创建它');
                 return 1;
             }
         }
@@ -46,9 +46,10 @@ class MakeApiDoc extends Command
             return 2;
         }
 
-        $src_dir = __DIR__.'/../../Http/Controllers/Api';
+        $src_dir = __DIR__.'/../../../docs/v1';
+        $cfg = __DIR__.'/../../../docs/v1/apidoc.json';
 
-        $cmd = vsprintf('apidoc -i %s -o %s', [$src_dir, $apidoc_path]);
+        $cmd = vsprintf('apidoc -c %s -i %s -o %s', [$cfg, $src_dir, $apidoc_path]);
         // var_dump($cmd);
         echo shell_exec($cmd);
     }

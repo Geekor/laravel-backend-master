@@ -11,22 +11,7 @@ use Geekor\Core\Support\GkVerify;
 
 class AuthController extends BaseController
 {
-    /**
-     * 用户登出
-     */
-    public function logout(Request $request)
-    {
-        if ($token = $this->user()->currentAccessToken()) {
-            $token->delete();
-        }
-        return Api::successDeleted();
-    }
-
-    public function info(Request $request)
-    {
-        return $this->user();
-    }
-
+    
     /*
     |--------------------------------------------------------------------------
     | 令牌（TOKEN）管理

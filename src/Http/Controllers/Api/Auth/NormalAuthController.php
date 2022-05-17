@@ -92,8 +92,27 @@ class NormalAuthController extends BaseController
 
         //...[4]
         return Api::success([
-            'info' => $user,
+            'info' => $user->only(['id', 'name', 'email', 'banned', 'created_at', 'updated_at']),
             'token' => $token->plainTextToken,
         ]);
+    }
+
+    /**
+     * 用户退出
+     */
+    public function logout(Request $request)
+    {
+        if ($token = $this->user()->currentAccessToken()) {
+            $token->delete();
+        }
+        return Api::successDeleted();
+    }
+
+    /**
+     * 用户信息
+     */
+    public function info(Request $request)
+    {
+        return $this->user();
     }
 }

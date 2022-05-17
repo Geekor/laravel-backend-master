@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-use Geekor\BackendMaster\Http\Controllers\Api\Auth\AuthController;
 use Geekor\BackendMaster\Http\Controllers\Api\Auth\MasterAuthController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\MasterController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\RoleController;
@@ -38,10 +37,10 @@ Route::group(['prefix' => vsprintf('/api/%s/auth',[$API_PREFIX])], function() {
     Route::middleware('auth:master')->group(function(){
 
         // 登出
-        Route::delete('/me', AuthController::class.'@logout');
+        Route::delete('/me', MasterAuthController::class.'@logout');
 
         // 用户账户信息（不含详细资料）
-        Route::get('/info', AuthController::class.'@info');
+        Route::get('/info', MasterAuthController::class.'@info');
     });
 });
 
