@@ -191,7 +191,10 @@ class UserController extends BaseController
         //...禁止「非超级管理员」做权限修改的动作
         $user = $this->getUserAndCheckHasRole(['super_master', 'user_master']);
 
-        $input = $this->checkInputRequiredParams($request, ['is_banned']);
+        //...检查输入参数
+        $this->checkRequestInput($request, [
+            'is_banned' => 'required',
+        ]);
 
         if (!$user = User::find($id)) {
             //'用户不存在'
@@ -199,7 +202,7 @@ class UserController extends BaseController
         }
 
         $ban = 0;
-        if ($input['is_banned']) {
+        if ($request->is_banned) {
             $ban = 1;
         } else {
             if ($user->hasRole('tester')) {

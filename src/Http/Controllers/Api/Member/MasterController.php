@@ -74,8 +74,18 @@ class MasterController extends BaseController
         //...权限拦截
         $user = $this->getUserAndCheckHasPermission('master:user-a');
 
+        //...检查输入参数
+        $this->checkRequestInput($request, [
+            'username' => 'required',
+            'password' => 'required',
+            'role' => 'required',
+        ]);
+
         //....
-        $params = $this->checkInputRequiredParams($request, ['username', 'password', 'role']);
+        $params = $request->only([
+            'username', 'password', 'role'
+        ]);
+
         $params['name'] = $request->input('name', $params['username']);
 
         if (Master::where('username', $params['username'])->exists()) {
@@ -84,12 +94,13 @@ class MasterController extends BaseController
         }
 
         $role = Role::where('name', $params['role'])->first();
-        if (!$role || $role->guard_name != 'admin') {
+        if (!$role || $role->guard_name != 'master') {
             //'非法角色'
             return Api::fail(__('string.adm_exception_illegal_role'));
         }
         //---------------
         $attr = Arr::except($params, 'role');
+
         if ($admin = Master::create($attr)) {
             $admin->assignRole($role->name);
 

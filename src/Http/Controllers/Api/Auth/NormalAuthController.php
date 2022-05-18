@@ -27,13 +27,12 @@ class NormalAuthController extends BaseController
          */
 
         //...[1]
-        if (GkVerify::checkRequestFailed($request, [
+        //...检查输入参数
+        $this->checkRequestInput($request, [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-        ])) {
-            return Api::fail('缺少参数');
-        }
+        ]);
 
         //...[2]
         $user = User::where('email', $request->email)->first();
@@ -72,13 +71,11 @@ class NormalAuthController extends BaseController
          */
 
         //...[1]
-        if (GkVerify::checkRequestFailed($request, [
+        $this->checkRequestInput($request, [
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
-        ])) {
-            return Api::fail('缺少参数');
-        }
+        ]);
 
         //...[2]
         $user = User::where('email', $request->email)->first();

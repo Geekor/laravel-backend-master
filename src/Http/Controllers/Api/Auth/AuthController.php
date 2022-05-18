@@ -11,7 +11,7 @@ use Geekor\Core\Support\GkVerify;
 
 class AuthController extends BaseController
 {
-    
+
     /*
     |--------------------------------------------------------------------------
     | 令牌（TOKEN）管理
@@ -26,11 +26,10 @@ class AuthController extends BaseController
      */
     public function createToken(Request $request)
     {
-        if (GkVerify::checkRequestFailed($request, [
+        //...检查输入参数
+        $this->checkRequestInput($request, [
             'device_name' => 'required',
-        ])) {
-            return Api::fail('缺少参数');
-        }
+        ]);
 
         $token = $request->user()->createToken($request->device_name);
 

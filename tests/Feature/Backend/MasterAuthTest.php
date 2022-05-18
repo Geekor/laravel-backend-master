@@ -9,6 +9,7 @@ use Geekor\Core\Support\GkTestUtil;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 
 class MasterAuthTest extends TestCase
 {
@@ -84,7 +85,7 @@ class MasterAuthTest extends TestCase
 
         $response = $this->postJson('/api/backend/auth/login', [
             'username' => $master->username,
-            'password' => 'qsdfwe',
+            'password' => Str::random(10),
             'device_name' => self::DEVICE_NAME
         ]);
 

@@ -103,7 +103,6 @@ php artisan bm:refresh  #重建数据库（慎用，此命令为不可见命令�
 "autoload-dev": {
     "psr-4": {
         "Tests\\": "tests/",
-master/tests/Unit</directory>
 
         "Geekor\\BackendMaster\\Database\\Factories\\": "_packages/geekor/laravel-backend-master/database/factories/",
         "Geekor\\BackendMaster\\Tests\\": "_packages/geekor/laravel-backend-master/tests/"
@@ -139,12 +138,11 @@ class BrowseAdminsTest extends TestCase
 
     // 下面属性的更多说明可查看 /tests/Base/TestCase.php
 
-    /** 用户登录时生成 TOKEN 需要的参数，用于表明是在那台设备登录 */
+    /** 用户登录时生成 TOKEN 需要的参数，用于表明是在哪台设备登录 */
     protected $my_device_name = 'php-auto-test';
 
     /** 标记当前测试 API 是管理员后台还是普通用户后台 */
     protected $my_guard_is_master = true;
-
     /** 标记当前 API 是否需要特定的角色/权限才能访问 */
     protected $my_guard_need_permission = true;
     /** 需要的特定角色/权限 */

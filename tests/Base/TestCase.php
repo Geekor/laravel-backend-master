@@ -2,13 +2,13 @@
 
 namespace Geekor\BackendMaster\Tests\Base;
 
-use Geekor\BackendMaster\Models\Master;
-use Geekor\BackendMaster\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 
 // 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
 use Tests\TestCase as AppTestCase;
 
+use Geekor\BackendMaster\Models\Master;
+use Geekor\BackendMaster\Models\User;
 use Geekor\BackendMaster\Tests\Base\ApiTestable;
 
 class TestCase extends AppTestCase implements ApiTestable
@@ -104,13 +104,11 @@ class TestCase extends AppTestCase implements ApiTestable
     }
 
     /**
-     * 当前 API 请求时要用到的参数(可以写多个)
+     * 当前 API 请求时要用到的参数
      * 例如：
      *
      * [
-     *   'get' => [
      *     'foo' => 'bar'
-     *   ]
      * ]
      *
      */

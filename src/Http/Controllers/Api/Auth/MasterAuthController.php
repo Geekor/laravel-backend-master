@@ -27,13 +27,11 @@ class MasterAuthController extends BaseController
          */
 
         //...[1]
-        if (GkVerify::checkRequestFailed($request, [
+        $this->checkRequestInput($request, [
             'username' => 'required',
             'password' => 'required',
             'device_name' => 'required',
-        ])) {
-            return Api::failx(Api::API_PARAM_MISS,'缺少参数');
-        }
+        ]);
 
         //...[2]
         $user = Master::where('username', $request->username)->first();
