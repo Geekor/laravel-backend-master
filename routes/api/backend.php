@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use Geekor\BackendMaster\Http\Controllers\Api\Auth\MasterAuthController;
+use Geekor\BackendMaster\Http\Controllers\Api\Auth\BackendAuthController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\MasterController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\RoleController;
 use Geekor\BackendMaster\Http\Controllers\Api\Member\PermissionController;
@@ -31,16 +31,16 @@ $API_PREFIX = config('bm.prefix', 'backend');
 Route::group(['prefix' => vsprintf('/api/%s/auth',[$API_PREFIX])], function() {
 
     // 登入
-    Route::post('/login', MasterAuthController::class.'@login');
+    Route::post('/login', BackendAuthController::class.'@login');
 
     // [认证后访问] ------------------------------------------
     Route::middleware('auth:master')->group(function(){
 
         // 登出
-        Route::delete('/me', MasterAuthController::class.'@logout');
+        Route::delete('/me', BackendAuthController::class.'@logout');
 
         // 用户账户信息（不含详细资料）
-        Route::get('/info', MasterAuthController::class.'@info');
+        Route::get('/info', BackendAuthController::class.'@info');
     });
 });
 

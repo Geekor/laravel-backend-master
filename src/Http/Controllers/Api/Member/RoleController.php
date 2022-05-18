@@ -77,10 +77,11 @@ class RoleController extends BaseController
             'name' => 'required',
             'level' => 'required',
             'title' => 'required',
+            'guard_name' => 'required',
         ]);
 
         //.......
-        $params = $request->only(['name', 'title', 'level', 'description']);
+        $params = $request->only(['guard_name', 'name', 'title', 'level', 'description']);
         $perms = $request->input('permissions', null);
         if ($role = Role::create($params)) {
             if ($perms) {
@@ -100,13 +101,12 @@ class RoleController extends BaseController
 
         //...输入检测
         $this->checkRequestInput($request, [
-            'name' => 'required',
             'level' => 'required',
             'title' => 'required',
         ]);
 
         //.......
-        $params = $request->only(['name', 'title', 'level', 'description']);
+        $params = $request->only(['title', 'level', 'description']);
         $perms = $request->input('permissions', []);
         if ($role = Role::find($id)) {
             $role->update($params);

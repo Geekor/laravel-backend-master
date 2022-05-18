@@ -9,7 +9,7 @@ use Geekor\BackendMaster\Http\Controllers\Api\BaseController;
 use Geekor\Core\Support\GkApi as Api;
 use Geekor\Core\Support\GkVerify;
 
-class AuthController extends BaseController
+class TokenController extends BaseController
 {
 
     /*

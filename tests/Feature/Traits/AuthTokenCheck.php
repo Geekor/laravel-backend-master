@@ -26,6 +26,10 @@ trait AuthTokenCheck
             case 'post':
                 $resp = $this->postJson($this->myTestingApi(), $this->myTestingParams());
                 break;
+            
+            case 'put':
+                $resp = $this->putJson($this->myTestingApi(), $this->myTestingParams());
+                break;
 
             case 'delete':
                 $resp = $this->deleteJson($this->myTestingApi());
@@ -52,6 +56,10 @@ trait AuthTokenCheck
 
             case 'post':
                 $resp = $this->withToken($token)->postJson($this->myTestingApi(), $this->myTestingParams());
+                break;
+
+            case 'put':
+                $resp = $this->withToken($token)->putJson($this->myTestingApi(), $this->myTestingParams());
                 break;
 
             case 'delete':
@@ -121,7 +129,7 @@ trait AuthTokenCheck
         $resp = null;
         $arr = $this->makeNormalUserAndToken($usePermission); //[user, token]
         $token = $arr['token'];
-        $ok_status_code = 200;
+        $ok_status_codes = [ 200 ];
         if (is_null($params)) {
             $params = $this->myTestingParams();
         }
@@ -133,11 +141,16 @@ trait AuthTokenCheck
 
             case 'post':
                 $resp = $this->withToken($token)->postJson($this->myTestingApi(), $params);
+                $ok_status_code[] = 201;
+                break;
+
+            case 'put':
+                $resp = $this->withToken($token)->putJson($this->myTestingApi(), $params);
                 break;
 
             case 'delete':
                 $resp = $this->withToken($token)->deleteJson($this->myTestingApi());
-                $ok_status_code = 204;
+                $ok_status_code[] = 204;
                 break;
         }
 
@@ -146,13 +159,14 @@ trait AuthTokenCheck
                 $resp->assertUnauthorized();
             } else {
                 if ($this->isPermissionRequired() && ! $usePermission) {
-                    $ok_status_code = 403; // 没有权限
+                    $ok_status_code = [ 403 ]; // 没有权限
                 }
 
                 if ($customAssertFn) {
                     $customAssertFn($resp);
                 } else {
-                    $resp->assertStatus($ok_status_code);
+                    //注意：是用 $this
+                    $this->assertTrue(GkTestUtil::isAcceptableStatus($resp, $ok_status_codes));
                 }
             }
         }
@@ -184,7 +198,7 @@ trait AuthTokenCheck
         $resp = null;
         $arr = $this->makeMasterUserAndToken($usePermission); //[user, token]
         $token = $arr['token'];
-        $ok_status_code = 200;
+        $ok_status_codes = [ 200 ];
         if (is_null($params)) {
             $params = $this->myTestingParams();
         }
@@ -196,24 +210,31 @@ trait AuthTokenCheck
 
             case 'post':
                 $resp = $this->withToken($token)->postJson($this->myTestingApi(), $params);
+                $ok_status_codes[] = 201;
                 break;
 
+            case 'put':
+                $resp = $this->withToken($token)->putJson($this->myTestingApi(), $params);
+                break;
+                
             case 'delete':
                 $resp = $this->withToken($token)->deleteJson($this->myTestingApi());
-                $ok_status_code = 204;
+                $ok_status_codes[] = 204;
                 break;
         }
 
         if ($resp) {
             if ($this->isMasterGuard()) {
                 if ($this->isPermissionRequired() && ! $usePermission) {
-                    $ok_status_code = 403; // 没有权限
+                    $ok_status_codes = [ 403 ]; // 没有权限，只能运行这一种存在
                 }
 
                 if ($customAssertFn) {
                     $customAssertFn($resp);
                 } else {
-                    $resp->assertStatus($ok_status_code);
+
+                    //注意：是 $this
+                    $this->assertTrue(GkTestUtil::isAcceptableStatus($resp, $ok_status_codes));
                 }
             } else {
                 $resp->assertUnauthorized();

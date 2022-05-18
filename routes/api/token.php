@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use Geekor\BackendMaster\Http\Controllers\Api\Auth\AuthController;
+use Geekor\BackendMaster\Http\Controllers\Api\Auth\TokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,15 +23,15 @@ Route::group([
 ],function() {
 
     //... 生成新的 token （旧的依旧会有用）
-    Route::post('/tokens', [AuthController::class, 'createToken']);
+    Route::post('/tokens', [TokenController::class, 'createToken']);
 
     //... 获取所有 有效的 token
-    Route::get('/tokens', [AuthController::class, 'tokens']);
+    Route::get('/tokens', [TokenController::class, 'tokens']);
 
     //... 删除指定 token
-    Route::delete('/tokens/{id}', [AuthController::class, 'removeToken']);
+    Route::delete('/tokens/{id}', [TokenController::class, 'removeToken']);
 
     //... 删除所有 token
-    Route::delete('/tokens', [AuthController::class, 'removeAllTokens']);
+    Route::delete('/tokens', [TokenController::class, 'removeAllTokens']);
 
 });

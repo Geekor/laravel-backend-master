@@ -2,6 +2,7 @@
 
 namespace Geekor\BackendMaster\Tests\Base;
 
+use Exception;
 use Illuminate\Foundation\Testing\WithFaker;
 
 // 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
@@ -27,7 +28,11 @@ class TestAuthCase extends TestCase implements ApiTestable
      */
     public function makeMasterUserAndToken($usePermission = null): array
     {
-        $user = Master::factory()->create();
+        $user = null;
+        do {try { 
+            $user = Master::factory()->create(); break;
+        } catch (Exception $e) {}} while(true);
+            
         if (is_null($usePermission)) {
             $usePermission = $this->isPermissionRequired();
         }
@@ -57,7 +62,11 @@ class TestAuthCase extends TestCase implements ApiTestable
      */
     public function makeNormalUserAndToken($usePermission = null): array
     {
-        $user = User::factory()->create();
+        $user = null;
+        do {try { 
+            $user = User::factory()->create(); break;
+        } catch (Exception $e) {}} while(true);
+
         if (is_null($usePermission)) {
             $usePermission = $this->isPermissionRequired();
         }
