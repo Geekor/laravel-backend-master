@@ -99,11 +99,12 @@ class ServiceProvider extends BaseServiceProvider
             $this->loadCommands();
         }
 
+        /**
+         * factoies 已经在 compser.json 中通过 autoload 配置了，所以不用手动 load 啦
+         */
         $this->defineRoutes();
         $this->configureGuard();
         $this->configureMiddleware();
-
-        $this->configureFactories();
     }
 
     /**
@@ -245,10 +246,5 @@ class ServiceProvider extends BaseServiceProvider
         // $kernel = app()->make(Kernel::class);
 
         // $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
-    }
-
-    protected function configureFactories()
-    {
-        // $this->loadFactoriesFrom(__DIR__.'/../database/factories/');
     }
 }

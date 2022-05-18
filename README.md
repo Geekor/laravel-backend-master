@@ -96,4 +96,30 @@ php artisan bm:refresh  #重建数据库（慎用，此命令为不可见命令�
 注意： 添加自定义命令后，需要添加到 `src/ServiceProvider.php` 中的 `COMMANDS`.
 
 
+## 添加拓展包的测试用例（在本地开发拓展包阶段）
 
+- 添加包发现到根目录 composer.json
+```json
+"autoload-dev": {
+    "psr-4": {
+        "Tests\\": "tests/",
+master/tests/Unit</directory>
+
+        "Geekor\\BackendMaster\\Database\\Factories\\": "_packages/geekor/laravel-backend-master/database/factories/",
+        "Geekor\\BackendMaster\\Tests\\": "_packages/geekor/laravel-backend-master/tests/"
+    }
+},
+```
+
+- 添加拓展包中的测试用例到根目录 phpunit.xml 文件中的 `<testsuites>` 字段
+
+```xml
+    <testsuites>
+        <testsuite name="GeekorBackendMasterFeature">
+            <directory suffix="Test.php">./_packages/geekor/laravel-backend-master/tests/Feature</directory>
+        </testsuite>
+        <testsuite name="GeekorBackendMasterUnit">
+            <directory suffix="Test.php">./_packages/geekor/laravel-backend-master/tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+```
