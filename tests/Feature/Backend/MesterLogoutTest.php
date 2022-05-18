@@ -2,10 +2,10 @@
 
 namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
-use Geekor\BackendMaster\Tests\Base\TestCase;
+use Geekor\BackendMaster\Tests\Base\TestAuthCase;
 use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
 
-class MesterLogoutTest extends TestCase
+class MesterLogoutTest extends TestAuthCase
 {
     use AuthTokenCheck;
 

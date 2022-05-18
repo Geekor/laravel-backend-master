@@ -7,6 +7,9 @@ use Illuminate\Testing\TestResponse;
 
 use Geekor\Core\Support\GkTestUtil;
 
+/**
+ * 本模块只用于需要 token 验证的模块
+ */
 trait AuthTokenCheck
 {
     /**
@@ -119,7 +122,7 @@ trait AuthTokenCheck
         $arr = $this->makeNormalUserAndToken($usePermission); //[user, token]
         $token = $arr['token'];
         $ok_status_code = 200;
-        if ($params === null) {
+        if (is_null($params)) {
             $params = $this->myTestingParams();
         }
 
@@ -182,7 +185,7 @@ trait AuthTokenCheck
         $arr = $this->makeMasterUserAndToken($usePermission); //[user, token]
         $token = $arr['token'];
         $ok_status_code = 200;
-        if ($params === null) {
+        if (is_null($params)) {
             $params = $this->myTestingParams();
         }
 

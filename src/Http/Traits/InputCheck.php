@@ -5,14 +5,28 @@ namespace Geekor\BackendMaster\Http\Traits;
 use Illuminate\Http\Request;
 
 use Geekor\Core\Exceptions\InputException;
+use Geekor\Core\Support\GkApi;
 use Geekor\Core\Support\GkVerify;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait InputCheck
 {
     protected function checkRequestInput(Request $request, $validator)
     {
-        if (GkVerify::checkRequestFailed($request, $validator)) {
-            throw new InputException();
+        $ret = GkVerify::checkRequestFailed($request, $validator);
+        if ($ret['failed']) {
+            $errs = Arr::flatten($ret['errors']);
+            $msg = $errs[0];
+
+            if (Str::contains($msg, 'required', true)) {
+                throw new InputException(GkApi::API_PARAM_MISS, $msg);
+
+            } else if (Str::contains($msg, 'format invalid', true)) {
+                throw new InputException(GkApi::API_PARAM_ERROR, $msg);
+            }
+
+            throw new InputException(GkApi::API_REQUEST_ERROR, $msg);
         }
     }
 

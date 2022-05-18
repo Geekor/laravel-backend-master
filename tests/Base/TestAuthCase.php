@@ -5,13 +5,13 @@ namespace Geekor\BackendMaster\Tests\Base;
 use Illuminate\Foundation\Testing\WithFaker;
 
 // 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
-use Tests\TestCase as AppTestCase;
+use Tests\TestCase;
 
 use Geekor\BackendMaster\Models\Master;
 use Geekor\BackendMaster\Models\User;
 use Geekor\BackendMaster\Tests\Base\ApiTestable;
 
-class TestCase extends AppTestCase implements ApiTestable
+class TestAuthCase extends TestCase implements ApiTestable
 {
     use WithFaker;
 
@@ -20,9 +20,18 @@ class TestCase extends AppTestCase implements ApiTestable
         return $this->faker;
     }
 
-    public function makeMasterUserAndToken($usePermission = false): array
+    /**
+     * 创建管理员并生成一个登录后的 token
+     *
+     * @param usePermission 是否分配定义中的权限配置
+     */
+    public function makeMasterUserAndToken($usePermission = null): array
     {
         $user = Master::factory()->create();
+        if (is_null($usePermission)) {
+            $usePermission = $this->isPermissionRequired();
+        }
+
         if ($usePermission) {
             if (count($this->my_guard_roles) > 0) {
                 $user->assignRole($this->my_guard_roles);
@@ -41,9 +50,18 @@ class TestCase extends AppTestCase implements ApiTestable
         ];
     }
 
-    public function makeNormalUserAndToken($usePermission = false): array
+    /**
+     * 创建普通用户并生成一个登录后的 token
+     *
+     * @param usePermission 是否分配定义中的权限配置
+     */
+    public function makeNormalUserAndToken($usePermission = null): array
     {
         $user = User::factory()->create();
+        if (is_null($usePermission)) {
+            $usePermission = $this->isPermissionRequired();
+        }
+
         if ($usePermission) {
             if (count($this->my_guard_roles) > 0) {
                 $user->assignRole($this->my_guard_roles);

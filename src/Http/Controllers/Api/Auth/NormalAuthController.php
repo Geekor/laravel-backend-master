@@ -81,7 +81,7 @@ class NormalAuthController extends BaseController
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! GkVerify::checkHash($request->password, $user->password)) {
-            return Api::fail('帐号或密码错误');
+            return Api::failx(Api::API_PARAM_ERROR, '帐号或密码错误');
         }
 
         //...[3]

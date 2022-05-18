@@ -1,9 +1,9 @@
 <?php
 
-namespace Geekor\BackendMaster\Tests\Feature\Backend;
+namespace Geekor\BackendMaster\Tests\Feature\Normal;
 
 use Tests\TestCase; // 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
-use Geekor\BackendMaster\Models\Master;
+use Geekor\BackendMaster\Models\User;
 use Geekor\Core\Support\GkApi;
 use Geekor\Core\Support\GkTestUtil;
 
@@ -11,20 +11,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 
-class MasterAuthTest extends TestCase
+class NormalAuthTest extends TestCase
 {
     use WithFaker;
 
     const DEVICE_NAME = 'php-auto-test';
-    const TESTING_API = '/api/backend/auth/login';
-
-    /**
-     * 访问一个不存在的 API
-     */
-    public function test_try_a_not_exists_api()
-    {
-        $this->get('/api/just-not-exists')->assertNotFound();
-    }
+    const TESTING_API = '/api/auth/email-login';
 
     /*
     |--------------------------------------------------------------------------
@@ -33,9 +25,9 @@ class MasterAuthTest extends TestCase
     */
 
     /**
-     * 登录 | 缺失 username
+     * 登录 | 缺失 email （登录帐号）
      */
-    public function test_login_without_username()
+    public function test_login_without_email()
     {
         $response = $this->postJson(self::TESTING_API, [
             'password' => 'password',
@@ -51,7 +43,7 @@ class MasterAuthTest extends TestCase
     public function test_login_without_password()
     {
         $response = $this->postJson(self::TESTING_API, [
-            'username' => $this->faker->userName(),
+            'email' => $this->faker->safeEmail(),
             'device_name' => self::DEVICE_NAME
         ]);
 
@@ -64,7 +56,7 @@ class MasterAuthTest extends TestCase
     public function test_login_without_device_name()
     {
         $response = $this->postJson(self::TESTING_API, [
-            'username' => $this->faker->userName(),
+            'email' => $this->faker->safeEmail(),
             'password' => 'password',
         ]);
 
@@ -76,10 +68,10 @@ class MasterAuthTest extends TestCase
      */
     public function test_login_with_bad_password()
     {
-        $master = Master::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->postJson(self::TESTING_API, [
-            'username' => $master->username,
+            'email' => $user->email,
             'password' => Str::random(10),
             'device_name' => self::DEVICE_NAME
         ]);
@@ -92,10 +84,10 @@ class MasterAuthTest extends TestCase
      */
     public function test_login_success()
     {
-        $master = Master::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->postJson(self::TESTING_API, [
-            'username' => $master->username,
+            'email' => $user->email,
             'password' => 'password',
             'device_name' => self::DEVICE_NAME
         ]);

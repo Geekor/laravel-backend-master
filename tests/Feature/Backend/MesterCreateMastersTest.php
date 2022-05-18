@@ -4,10 +4,10 @@ namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
 use Illuminate\Support\Str;
 
-use Geekor\BackendMaster\Tests\Base\TestCase;
+use Geekor\BackendMaster\Tests\Base\TestAuthCase;
 use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
 
-class MesterCreateMastersTest extends TestCase
+class MesterCreateMastersTest extends TestAuthCase
 {
     use AuthTokenCheck;
 
