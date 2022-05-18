@@ -37,7 +37,7 @@ class MasterAuthTest extends TestCase
     {
         $this->faker->userName();
 
-        $response = $this->post('/api/backend/auth/login', [
+        $response = $this->postJson('/api/backend/auth/login', [
             'password' => 'password',
             'device_name' => self::DEVICE_NAME
         ]);
@@ -52,7 +52,7 @@ class MasterAuthTest extends TestCase
     {
         $this->faker->userName();
 
-        $response = $this->post('/api/backend/auth/login', [
+        $response = $this->postJson('/api/backend/auth/login', [
             'username' => $this->faker->userName(),
             'device_name' => self::DEVICE_NAME
         ]);
@@ -67,7 +67,7 @@ class MasterAuthTest extends TestCase
     {
         $this->faker->userName();
 
-        $response = $this->post('/api/backend/auth/login', [
+        $response = $this->postJson('/api/backend/auth/login', [
             'username' => $this->faker->userName(),
             'password' => 'password',
         ]);
@@ -82,7 +82,7 @@ class MasterAuthTest extends TestCase
     {
         $master = Master::factory()->create();
 
-        $response = $this->post('/api/backend/auth/login', [
+        $response = $this->postJson('/api/backend/auth/login', [
             'username' => $master->username,
             'password' => 'qsdfwe',
             'device_name' => self::DEVICE_NAME
@@ -98,7 +98,7 @@ class MasterAuthTest extends TestCase
     {
         $master = Master::factory()->create();
 
-        $response = $this->post('/api/backend/auth/login', [
+        $response = $this->postJson('/api/backend/auth/login', [
             'username' => $master->username,
             'password' => 'password',
             'device_name' => self::DEVICE_NAME

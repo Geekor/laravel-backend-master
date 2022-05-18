@@ -20,9 +20,19 @@ class TestCase extends AppTestCase implements ApiTestable
         return $this->faker;
     }
 
-    public function makeMasterUserAndToken(): array
+    public function makeMasterUserAndToken($usePermission = false): array
     {
         $user = Master::factory()->create();
+        if ($usePermission) {
+            if (count($this->my_guard_roles) > 0) {
+                $user->assignRole($this->my_guard_roles);
+            }
+
+            if (count($this->my_guard_permissions) > 0) {
+                $user->givePermissionTo($this->my_guard_permissions);
+            }
+        }
+
         $token = $user->createPlainTextToken($this->myDeviceName());
 
         return [
@@ -31,9 +41,18 @@ class TestCase extends AppTestCase implements ApiTestable
         ];
     }
 
-    public function makeNormalUserAndToken(): array
+    public function makeNormalUserAndToken($usePermission = false): array
     {
         $user = User::factory()->create();
+        if ($usePermission) {
+            if (count($this->my_guard_roles) > 0) {
+                $user->assignRole($this->my_guard_roles);
+            }
+
+            if (count($this->my_guard_permissions) > 0) {
+                $user->givePermissionTo($this->my_guard_permissions);
+            }
+        }
         $token = $user->createPlainTextToken($this->myDeviceName());
 
         return [
@@ -48,6 +67,14 @@ class TestCase extends AppTestCase implements ApiTestable
     public function isMasterGuard(): bool
     {
         return $this->my_guard_is_master;
+    }
+
+    /**
+     * 用于判断是否需要特定 角色/权限 才能访问
+     */
+    public function isPermissionRequired(): bool
+    {
+        return $this->my_guard_need_permission;
     }
 
     /**

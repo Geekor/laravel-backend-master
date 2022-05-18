@@ -123,3 +123,42 @@ master/tests/Unit</directory>
         </testsuite>
     </testsuites>
 ```
+
+- 添加 Feature 测试用例
+
+```php
+<?php
+namespace Geekor\BackendMaster\Tests\Feature;
+
+use Geekor\BackendMaster\Tests\Base\TestCase;
+use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
+
+class BrowseAdminsTest extends TestCase
+{
+    use AuthTokenCheck;
+
+    // 下面属性的更多说明可查看 /tests/Base/TestCase.php
+
+    /** 用户登录时生成 TOKEN 需要的参数，用于表明是在那台设备登录 */
+    protected $my_device_name = 'php-auto-test';
+
+    /** 标记当前测试 API 是管理员后台还是普通用户后台 */
+    protected $my_guard_is_master = true;
+
+    /** 标记当前 API 是否需要特定的角色/权限才能访问 */
+    protected $my_guard_need_permission = true;
+    /** 需要的特定角色/权限 */
+    protected $my_guard_roles = ['super_admin'];
+    protected $my_guard_permissions = [];
+
+    /** 当前测试的 API */
+    protected $my_testing_api = '/api/backend/admins';
+    /** 测试 API 需要的请求方式 */
+    protected $my_testing_method = 'get';
+    /** 参数 */
+    protected $my_testing_params = [
+        'get' => []
+    ];
+}
+
+```
