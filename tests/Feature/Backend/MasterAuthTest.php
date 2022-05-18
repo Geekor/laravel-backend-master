@@ -9,7 +9,6 @@ use Geekor\Core\Support\GkTestUtil;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Testing\Fluent\AssertableJson;
 
 class MasterAuthTest extends TestCase
 {

@@ -2,6 +2,10 @@
 
 namespace Geekor\BackendMaster\Tests\Base;
 
+use Geekor\BackendMaster\Models\Master;
+use Geekor\BackendMaster\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
+
 // 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
 use Tests\TestCase as AppTestCase;
 
@@ -9,6 +13,35 @@ use Geekor\BackendMaster\Tests\Base\ApiTestable;
 
 class TestCase extends AppTestCase implements ApiTestable
 {
+    use WithFaker;
+
+    public function myFaker(): \Faker\Generator
+    {
+        return $this->faker;
+    }
+
+    public function makeMasterUserAndToken(): array
+    {
+        $user = Master::factory()->create();
+        $token = $user->createPlainTextToken($this->myDeviceName());
+
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
+    }
+
+    public function makeNormalUserAndToken(): array
+    {
+        $user = User::factory()->create();
+        $token = $user->createPlainTextToken($this->myDeviceName());
+
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
+    }
+
     /**
      * 用于判断当前这个 API 是否为管理员身份才能请求的
      */

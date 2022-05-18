@@ -2,6 +2,8 @@
 
 namespace Geekor\BackendMaster\Tests\Feature\Traits;
 
+use Illuminate\Support\Str;
+
 use Geekor\BackendMaster\Models\Master;
 use Geekor\BackendMaster\Models\User;
 
@@ -24,7 +26,9 @@ trait AuthTokenCheck
     public function test_call_api_by_bad_token()
     {
         if ($this->myTestingMethod() === 'get') {
-            $resp = $this->withToken('frowqjfemo023ur')->getJson($this->myTestingApi());
+            $token = Str::random(10);
+
+            $resp = $this->withToken($token)->getJson($this->myTestingApi());
             $resp->assertUnauthorized();
         }
     }
@@ -35,10 +39,9 @@ trait AuthTokenCheck
     public function test_call_api_by_normal_user_token()
     {
         if ($this->myTestingMethod() === 'get') {
-            $user = User::factory()->create();
-            $token = $user->createPlainTextToken($this->myDeviceName());
+            $arr = $this->makeNormalUserAndToken();
 
-            $resp = $this->withToken($token)->getJson($this->myTestingApi());
+            $resp = $this->withToken($arr['token'])->getJson($this->myTestingApi());
 
             if ($this->isMasterGuard()) {
                 $resp->assertUnauthorized();
@@ -54,10 +57,9 @@ trait AuthTokenCheck
     public function test_call_api_by_master_user_token()
     {
         if ($this->myTestingMethod() === 'get') {
-            $user = Master::factory()->create();
-            $token = $user->createPlainTextToken($this->myDeviceName());
+            $arr = $this->makeMasterUserAndToken();
 
-            $resp = $this->withToken($token)->getJson($this->myTestingApi());
+            $resp = $this->withToken($arr['token'])->getJson($this->myTestingApi());
 
             if ($this->isMasterGuard()) {
                 $resp->assertOk();
