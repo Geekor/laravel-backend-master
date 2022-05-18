@@ -12,8 +12,8 @@ trait AuthTokenCheck
      */
     public function test_call_api_without_token()
     {
-        if ($this->my_testing_method === 'get') {
-            $resp = $this->getJson($this->my_testing_api);
+        if ($this->myTestingMethod() === 'get') {
+            $resp = $this->getJson($this->myTestingApi());
             $resp->assertUnauthorized();
         }
     }
@@ -23,8 +23,8 @@ trait AuthTokenCheck
      */
     public function test_call_api_by_bad_token()
     {
-        if ($this->my_testing_method === 'get') {
-            $resp = $this->withToken('frowqjfemo023ur')->getJson($this->my_testing_api);
+        if ($this->myTestingMethod() === 'get') {
+            $resp = $this->withToken('frowqjfemo023ur')->getJson($this->myTestingApi());
             $resp->assertUnauthorized();
         }
     }
@@ -34,12 +34,17 @@ trait AuthTokenCheck
      */
     public function test_call_api_by_normal_user_token()
     {
-        if ($this->my_testing_method === 'get') {
+        if ($this->myTestingMethod() === 'get') {
             $user = User::factory()->create();
-            $token = $user->createPlainTextToken($this->my_device_name);
+            $token = $user->createPlainTextToken($this->myDeviceName());
 
-            $resp = $this->withToken($token)->getJson($this->my_testing_api);
-            $resp->assertUnauthorized();
+            $resp = $this->withToken($token)->getJson($this->myTestingApi());
+
+            if ($this->isMasterGuard()) {
+                $resp->assertUnauthorized();
+            } else {
+                $resp->assertOk();
+            }
         }
     }
 
@@ -48,13 +53,17 @@ trait AuthTokenCheck
      */
     public function test_call_api_by_master_user_token()
     {
-        if ($this->my_testing_method === 'get') {
+        if ($this->myTestingMethod() === 'get') {
             $user = Master::factory()->create();
-            $token = $user->createPlainTextToken($this->my_device_name);
+            $token = $user->createPlainTextToken($this->myDeviceName());
 
-            $resp = $this->withToken($token)->getJson($this->my_testing_api);
+            $resp = $this->withToken($token)->getJson($this->myTestingApi());
 
-            $resp->assertOk()->assertJsonStructure(['id', 'username', 'name']);
+            if ($this->isMasterGuard()) {
+                $resp->assertOk();
+            } else {
+                $resp->assertUnauthorized();
+            }
         }
     }
 }
