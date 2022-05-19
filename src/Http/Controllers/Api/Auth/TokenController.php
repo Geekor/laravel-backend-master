@@ -45,7 +45,8 @@ class TokenController extends BaseController
         $query->orderBy('created_at', 'desc');
 
         // dd($request->user()->tokens);
-        return Api::success($query->get());
+        $arr = $query->get();
+        return Api::success($arr ?? []);
     }
 
     public function removeToken(Request $request, $id)

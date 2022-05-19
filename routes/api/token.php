@@ -18,9 +18,28 @@ use Geekor\BackendMaster\Http\Controllers\Api\Auth\TokenController;
 */
 
 Route::group([
+    'prefix' => '/api/backend',
+    'middleware' => ['auth:master', 'bm.login']
+], function() {
+
+    //... 生成新的 token （旧的依旧会有用）
+    Route::post('/tokens', [TokenController::class, 'createToken']);
+
+    //... 获取所有 有效的 token
+    Route::get('/tokens', [TokenController::class, 'tokens']);
+
+    //... 删除指定 token
+    Route::delete('/tokens/{id}', [TokenController::class, 'removeToken']);
+
+    //... 删除所有 token
+    Route::delete('/tokens', [TokenController::class, 'removeAllTokens']);
+
+});
+
+Route::group([
     'prefix' => '/api',
-    'middleware' => 'auth:sanctum'
-],function() {
+    'middleware' => ['auth:user', 'bm.login']
+], function() {
 
     //... 生成新的 token （旧的依旧会有用）
     Route::post('/tokens', [TokenController::class, 'createToken']);

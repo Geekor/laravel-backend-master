@@ -26,6 +26,21 @@ composer require geekor/laravel-backend-master:*
 ./vendor/geekor/laravel-backend-master/scripts/install-module.sh
 ```
 
+## 配置中间件
+
+为了尽量少改动到主项目的原则，我以及做和最大努力。
+不过，你在导入本拓展包后，还是不得不需要在主项目中修改如下文件：
+
+```php
+    // 位于文件 /app/Http/Kernel.php
+
+    class Kernel extends HttpKernel
+    {
+        use \Geekor\BackendMaster\Traits\SettingRoutes;
+        //...
+    }
+```
+
 ## 其他说明
 本目录中的 composer.json 只用于发布到 packagist.org 仓库中。
 

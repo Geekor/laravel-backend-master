@@ -30,7 +30,17 @@ if [ ${RET} -eq 0 ]; then
     echo " "
 fi
 
-# ==== backend masters ====
+# ==== geekor / core ====
+
+if [ ${RET} -eq 0 ]; then
+    php artisan vendor:publish --provider="Geekor\Core\ServiceProvider"
+    RET=$?
+    echo " "
+    echo "-------- BM: publish geekor/laravel-gk-core provider done ------"
+    echo " "
+fi
+
+# ==== geekor / backend masters ====
 
 if [ ${RET} -eq 0 ]; then
     php artisan vendor:publish --provider="Geekor\BackendMaster\ServiceProvider"
@@ -56,4 +66,14 @@ if [ ${RET} -eq 0 ]; then
 
     php artisan route:list
     php artisan permission:show
+fi
+
+# ==== php test ====
+
+if [ ${RET} -eq 0 ]; then
+    php artisan test
+    RET=$?
+    echo " "
+    echo "-------- BM: php test done ------"
+    echo " "
 fi

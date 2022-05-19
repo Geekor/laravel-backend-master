@@ -15,7 +15,8 @@
 return [
     'permissions' => [
         'master:backend-login' => [ 'guard_name' => 'master', 'title' => '网页登录认证', 'description' => '可以在前端登录'  ],
-        'master:backend-changelog-b' => [ 'guard_name' => 'master', 'title' => '查看后台更新日志', 'description' => '可以在后台管理界面查看后台更新日志'  ],
+        'master:wapp-master-login' => [ 'guard_name' => 'master', 'title' => '登录管理员后台', 'description' => '登录管理员平台（一般给管理员使用）'  ],
+        'master:wapp-pet-login' => [ 'guard_name' => 'master', 'title' => '登录宠物医院网站', 'description' => '登录宠物医院网站（一般给医生使用）'  ],
 
         'master:user-b'     => [ 'guard_name' => 'master', 'title' => '浏览用户', 'description' => '浏览普通（消费者）用户列表'  ],
         'master:user-r'     => [ 'guard_name' => 'master', 'title' => '查看用户', 'description' => '查看一个普通（消费者）用户信息'  ],

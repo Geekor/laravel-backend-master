@@ -10,7 +10,7 @@ namespace Geekor\BackendMaster;
  */
 class AppConst
 {
-    public const LANG_NAMESPACE = 'bm';
+    public const LANG_NAMESPACE = 'geekor-bm';
 
     //========================================
 

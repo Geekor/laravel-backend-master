@@ -3,6 +3,8 @@
 namespace Geekor\BackendMaster;
 
 use Illuminate\Filesystem\Filesystem;
+use App\Http\Kernel as AppKernel;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -138,7 +140,7 @@ class ServiceProvider extends BaseServiceProvider
         ] as $f) {
             $arr[vsprintf('%s/../database/migrations/%s.stub',[__DIR__, $f])] = $this->getMigrationFileName($f);
         }
-        $this->publishes($arr, 'bm-migrations');
+        $this->publishes($arr, 'geekor-bm-migrations');
     }
 
     /**
@@ -148,12 +150,16 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__.'/../lang', AppConst::LANG_NAMESPACE);
 
-        if (app()->runningInConsole()) {
-
-            $this->publishes([
-                __DIR__.'/../lang' => app()->langPath('vendor/' . AppConst::LANG_NAMESPACE),
-            ], AppConst::LANG_NAMESPACE . '-lang');
-        }
+        // TODO:
+        //-------
+        // 目前来说没必要把翻译发布出去，
+        // 后续可以考虑通过调用命令的方式发布到主项目
+        //
+        // if (app()->runningInConsole()) {
+        //     $this->publishes([
+        //         __DIR__.'/../lang' => app()->langPath('vendor/' . AppConst::LANG_NAMESPACE),
+        //     ], AppConst::LANG_NAMESPACE . '-lang');
+        // }
     }
 
     protected function loadConfigs()
@@ -165,7 +171,7 @@ class ServiceProvider extends BaseServiceProvider
             __DIR__.'/../config/bm.php' => config_path('bm.php'),
             __DIR__.'/../config/bm_roles.php' => config_path('bm_roles.php'),
             __DIR__.'/../config/bm_masters.php' => config_path('bm_masters.php'),
-        ], 'bm-configs');
+        ], 'geekor-bm-configs');
     }
 
     /**
@@ -270,14 +276,32 @@ class ServiceProvider extends BaseServiceProvider
     // }
 
     /**
-     * Configure the Sanctum middleware and priority.
+     * 添加中间件
      *
      * @return void
      */
     protected function configureMiddleware()
     {
-        // $kernel = app()->make(Kernel::class);
+        // Kernel 在 App 中是单例，
+        // 通过 make() 实际只是取得单例。
+        $kernel = app()->make(Kernel::class);
 
-        // $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
+        if ($kernel instanceof AppKernel) {
+
+            // ----- 下面是要注册到 全局中间件列表
+
+            // AutoSettingLocale 这个翻译的必须要优先设置
+            $kernel->prependMiddleware(Http\Middleware\AutoSettingLocale::class);
+
+            // 根据配置来判断是否加载 请求头的检测
+            if (config('bm.use_api_headers_check', false)) {
+                $kernel->prependMiddleware(Http\Middleware\ApiHeadersCheck::class);
+            }
+
+            // ----- 下面是要注册到 路由中间件列表
+
+            $kernel->appendToRouteMiddleware('bm.login', Http\Middleware\AppAccessCheck::class);
+        }
+
     }
 }
