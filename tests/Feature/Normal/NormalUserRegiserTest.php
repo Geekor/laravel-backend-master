@@ -2,8 +2,8 @@
 
 namespace Geekor\BackendMaster\Tests\Feature\Normal;
 
-use Tests\TestCase; // 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
 use Geekor\BackendMaster\Models\User;
+use Geekor\BackendMaster\Tests\Base\TestNormalCase;
 use Geekor\Core\Support\GkApi;
 use Geekor\Core\Support\GkTestUtil;
 
@@ -11,12 +11,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 
-class NormalUserRegiserTest extends TestCase
+class NormalUserRegiserTest extends TestNormalCase
 {
     use WithFaker;
 
-    const DEVICE_NAME = 'php-auto-test';
-    const TESTING_API = '/api/auth/email-register';
+    protected $my_testing_api = '/api/auth/email-register';
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +28,7 @@ class NormalUserRegiserTest extends TestCase
      */
     public function test_register_without_email()
     {
-        $resp = $this->postJson(self::TESTING_API, [
+        $resp = $this->postJson($this->myTestingApi(), [
             'password' => 'password',
             'name' => Str::random(12)
         ]);
@@ -42,7 +41,7 @@ class NormalUserRegiserTest extends TestCase
      */
     public function test_register_without_password()
     {
-        $resp = $this->postJson(self::TESTING_API, [
+        $resp = $this->postJson($this->myTestingApi(), [
             'email' => $this->faker->safeEmail(),
             'name' => Str::random(12)
         ]);
@@ -55,7 +54,7 @@ class NormalUserRegiserTest extends TestCase
      */
     public function test_register_without_name()
     {
-        $resp = $this->postJson(self::TESTING_API, [
+        $resp = $this->postJson($this->myTestingApi(), [
             'email' => $this->faker->safeEmail(),
             'password' => 'password',
         ]);
@@ -68,7 +67,7 @@ class NormalUserRegiserTest extends TestCase
      */
     public function test_register_with_bad_email_format()
     {
-        $resp = $this->postJson(self::TESTING_API, [
+        $resp = $this->postJson($this->myTestingApi(), [
             'email' => Str::random(10),
             'password' => Str::random(10),
             'name' => Str::random(10)
@@ -82,13 +81,17 @@ class NormalUserRegiserTest extends TestCase
      */
     public function test_register_success()
     {
-        $resp = $this->postJson(self::TESTING_API, [
-            'email' => $this->faker->safeEmail(),
+        $email = $this->faker->safeEmail();
+
+        $resp = $this->postJson($this->myTestingApi(), [
+            'email' => $email,
             'password' => 'password',
             'name' => Str::random(10)
         ]);
 
         $resp->assertCreated()->assertJsonStructure(['id', 'name', 'email']);
+
+        User::where('email', $email)->delete();
     }
 
 }

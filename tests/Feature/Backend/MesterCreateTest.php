@@ -2,16 +2,16 @@
 
 namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
+use Geekor\BackendMaster\Models\Master;
 use Illuminate\Support\Str;
 
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
 use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
-use Geekor\BackendMaster\Tests\Base\Traits\AuthValidByMasterUser;
+use Geekor\Core\Support\GkTestUtil;
 
 class MesterCreateTest extends TestAuthCase
 {
     use AuthInvalidCheck;
-    use AuthValidByMasterUser;
 
     // 下面属性的更多说明可查看 /tests/Base/TestCase.php
 
@@ -43,7 +43,6 @@ class MesterCreateTest extends TestAuthCase
             'password' => Str::random(8),
             'role' => 'data_master'
         ];
-
     }
 
     /*
@@ -51,4 +50,15 @@ class MesterCreateTest extends TestAuthCase
     |
     |--------------------------------------------------------------------------
     */
+
+    public function test_call_api_of_creating_new_master_success()
+    {
+        $this->callApiByMasterUserToken(true, null, function($resp) {
+            $this->assertTrue(GkTestUtil::isAcceptableStatus($resp, [
+                200, 201
+            ]));
+
+            Master::where('username', $this->my_testing_params['username'])->delete();
+        });
+    }
 }

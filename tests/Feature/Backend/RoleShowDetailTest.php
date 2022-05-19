@@ -4,7 +4,6 @@ namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
 use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
-use Geekor\BackendMaster\Tests\Base\Traits\AuthValidByMasterUser;
 
 class RoleShowDetailTest extends TestAuthCase
 {

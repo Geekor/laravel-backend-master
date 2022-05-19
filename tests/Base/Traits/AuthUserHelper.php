@@ -48,7 +48,7 @@ trait AuthUserHelper
 
             case 'post':
                 $resp = $this->withToken($token)->postJson($this->myTestingApi(), $params);
-                $ok_status_code[] = 201;
+                $ok_status_codes[] = 201;
                 break;
 
             case 'put':
@@ -57,7 +57,7 @@ trait AuthUserHelper
 
             case 'delete':
                 $resp = $this->withToken($token)->deleteJson($this->myTestingApi());
-                $ok_status_code[] = 204;
+                $ok_status_codes[] = 204;
                 break;
         }
 
@@ -66,17 +66,24 @@ trait AuthUserHelper
                 $resp->assertUnauthorized();
             } else {
                 if ($this->isPermissionRequired() && ! $usePermission) {
-                    $ok_status_code = [ 403 ]; // 没有权限
+                    $ok_status_codes = [ 403 ]; // 没有权限，禁止访问
                 }
 
                 if ($customAssertFn) {
                     $customAssertFn($resp);
+
                 } else {
+                    // if (! GkTestUtil::isAcceptableStatus($resp, $ok_status_codes)) {
+                    //     var_dump($resp->getStatusCode(), $ok_status_codes);
+                    // }
                     //注意：是用 $this
                     $this->assertTrue(GkTestUtil::isAcceptableStatus($resp, $ok_status_codes));
                 }
             }
         }
+
+        // 删除临时生成的帐号
+        $arr['user'] && $arr['user']->delete();
     }
 
     /**
@@ -101,7 +108,7 @@ trait AuthUserHelper
     protected function callApiByMasterUserToken($usePermission, $params=null, $customAssertFn=null)
     {
         $resp = null;
-        // makeMasterUserAndToken() defined in Base/TestAuthCase.php
+        // defined in Base/TestAuthCase.php
         $arr = $this->makeMasterUserAndToken($usePermission); //[user, token]
         $token = $arr['token'];
         $ok_status_codes = [ 200 ];
@@ -132,13 +139,16 @@ trait AuthUserHelper
         if ($resp) {
             if ($this->isMasterGuard()) {
                 if ($this->isPermissionRequired() && ! $usePermission) {
-                    $ok_status_codes = [ 403 ]; // 没有权限，只能运行这一种存在
+                    $ok_status_codes = [ 403 ]; // 没有权限，禁止访问只能允许这一种存在
                 }
 
                 if ($customAssertFn) {
                     $customAssertFn($resp);
-                } else {
 
+                } else {
+                    // if (! GkTestUtil::isAcceptableStatus($resp, $ok_status_codes)) {
+                    //     var_dump($resp);
+                    // }
                     //注意：是 $this
                     $this->assertTrue(GkTestUtil::isAcceptableStatus($resp, $ok_status_codes));
                 }
@@ -146,5 +156,8 @@ trait AuthUserHelper
                 $resp->assertUnauthorized();
             }
         }
+
+        // 删除临时生成的帐号
+        $arr['user'] && $arr['user']->delete();
     }
 }

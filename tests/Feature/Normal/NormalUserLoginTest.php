@@ -1,22 +1,20 @@
 <?php
 
-namespace Geekor\BackendMaster\Tests\Feature\Backend;
+namespace Geekor\BackendMaster\Tests\Feature\Normal;
 
-use Tests\TestCase; // 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
-use Geekor\BackendMaster\Models\Master;
+use Geekor\BackendMaster\Models\User;
+use Geekor\BackendMaster\Tests\Base\TestNormalCase;
 use Geekor\Core\Support\GkApi;
-use Geekor\Core\Support\GkTestUtil;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 
-class MasterAuthTest extends TestCase
+class NormalUserLoginTest extends TestNormalCase
 {
     use WithFaker;
 
-    const DEVICE_NAME = 'php-auto-test';
-    const TESTING_API = '/api/backend/auth/login';
+    protected $my_testing_api = '/api/auth/email-login';
 
     /*
     |--------------------------------------------------------------------------
@@ -25,13 +23,13 @@ class MasterAuthTest extends TestCase
     */
 
     /**
-     * 登录 | 缺失 username
+     * 登录 | 缺失 email （登录帐号）
      */
-    public function test_login_without_username()
+    public function test_login_without_email()
     {
-        $response = $this->postJson(self::TESTING_API, [
+        $response = $this->postJson($this->myTestingApi(), [
             'password' => 'password',
-            'device_name' => self::DEVICE_NAME
+            'device_name' => $this->myDeviceName()
         ]);
 
         $response->assertStatus(400)->assertJson(['code' => GkApi::API_PARAM_MISS]);
@@ -42,9 +40,9 @@ class MasterAuthTest extends TestCase
      */
     public function test_login_without_password()
     {
-        $response = $this->postJson(self::TESTING_API, [
-            'username' => $this->faker->userName(),
-            'device_name' => self::DEVICE_NAME
+        $response = $this->postJson($this->myTestingApi(), [
+            'email' => $this->faker->safeEmail(),
+            'device_name' => $this->myDeviceName()
         ]);
 
         $response->assertStatus(400)->assertJson(['code' => GkApi::API_PARAM_MISS]);
@@ -55,8 +53,8 @@ class MasterAuthTest extends TestCase
      */
     public function test_login_without_device_name()
     {
-        $response = $this->postJson(self::TESTING_API, [
-            'username' => $this->faker->userName(),
+        $response = $this->postJson($this->myTestingApi(), [
+            'email' => $this->faker->safeEmail(),
             'password' => 'password',
         ]);
 
@@ -68,15 +66,17 @@ class MasterAuthTest extends TestCase
      */
     public function test_login_with_bad_password()
     {
-        $master = Master::factory()->create();
+        $user = User::factory()->create();
 
-        $response = $this->postJson(self::TESTING_API, [
-            'username' => $master->username,
+        $response = $this->postJson($this->myTestingApi(), [
+            'email' => $user->email,
             'password' => Str::random(10),
-            'device_name' => self::DEVICE_NAME
+            'device_name' => $this->myDeviceName()
         ]);
 
         $response->assertStatus(400)->assertJson(['code' => GkApi::API_PARAM_ERROR]);
+
+        $user->delete();
     }
 
     /**
@@ -84,15 +84,17 @@ class MasterAuthTest extends TestCase
      */
     public function test_login_success()
     {
-        $master = Master::factory()->create();
+        $user = User::factory()->create();
 
-        $response = $this->postJson(self::TESTING_API, [
-            'username' => $master->username,
+        $response = $this->postJson($this->myTestingApi(), [
+            'email' => $user->email,
             'password' => 'password',
-            'device_name' => self::DEVICE_NAME
+            'device_name' => $this->myDeviceName()
         ]);
 
         $response->assertOk()->assertJsonStructure(['info', 'token']);
+
+        $user->delete();
     }
 
 }

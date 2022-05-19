@@ -43,6 +43,7 @@ class RoleUpdateTest extends TestAuthCase
 
     public function test_call_api_without_level_param()
     {
+
         $this->callApiByMasterUser([
             'title' => '普通用户',
             'description' => '测试修改'

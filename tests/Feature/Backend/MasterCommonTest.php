@@ -2,21 +2,24 @@
 
 namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
-// 注意：这里是用的主项目中的基类，如果有改过 namespace 这里也要改
-use Tests\TestCase;
+use Geekor\BackendMaster\Tests\Base\TestNormalCase;
+use Geekor\BackendMaster\Tests\Base\Traits\ApiPrefixUtil;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 
-class MasterCommonTest extends TestCase
+class MasterCommonTest extends TestNormalCase
 {
     use WithFaker;
+    use ApiPrefixUtil;
+
+    protected $my_testing_api = '/api/backend/just-not-exists';
 
     /**
      * 访问一个不存在的 API
      */
     public function test_try_a_not_exists_api()
     {
-        $this->get('/api/just-not-exists')->assertNotFound();
+        $this->get($this->my_testing_api)->assertNotFound();
     }
 }
