@@ -7,7 +7,6 @@ use Geekor\BackendMaster\Tests\Base\Traits\ApiPrefixUtil;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
-
 class MasterCommonTest extends TestNormalCase
 {
     use WithFaker;
@@ -20,6 +19,6 @@ class MasterCommonTest extends TestNormalCase
      */
     public function test_try_a_not_exists_api()
     {
-        $this->get($this->my_testing_api)->assertNotFound();
+        $this->get($this->myTestingApi())->assertNotFound();
     }
 }

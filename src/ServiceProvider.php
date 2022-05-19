@@ -5,7 +5,6 @@ namespace Geekor\BackendMaster;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -59,44 +58,15 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
+        $this->loadTranslations();
+
         if (app()->runningInConsole()) {
-            // .stub 的迁移文件不会在 php artisan migrate 中出现
-            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-            // 发布迁移文件（不管理日期）
-            // ---------------------
-            // 这方法可以批量发布整个目录的文件，
-            // 但是日期是固定的，而且要先设置好
-            // $this->publishes([
-            //     __DIR__.'/../database/migrations' => database_path('migrations'),
-            // ]);
-
-            // 发布迁移文件（自动自定日期为当前）
-            // ----------------------------
-            // 下面的两个配置其实是可以合并的，但是为了先创建权限表，所以才拆开
-
-            $arr = [];
-            foreach ([
-                // 为了保住能顺利排序，最好从 250000 之后开始
-                '300000_create_permission_extra_info.php',
-                '400000_create_backend_masters_table.php',
-                '500010_create_bans_table.php',
-                '500020_create_configures_table.php',
-            ] as $f) {
-                $arr[vsprintf('%s/../database/migrations/%s.stub',[__DIR__, $f])] = $this->getMigrationFileName($f);
-            }
-            $this->publishes($arr, 'bm-migrations');
-
-            // 发布 配置文件
-            // ---------------
-            // (拷贝到 /app/config/ 目录)
-            $this->publishes([
-                __DIR__.'/../config/bm.php' => config_path('bm.php'),
-                __DIR__.'/../config/bm_roles.php' => config_path('bm_roles.php'),
-                __DIR__.'/../config/bm_masters.php' => config_path('bm_masters.php'),
-            ], 'bm-configs');
 
             $this->loadCommands();
+
+            $this->loadConfigs();
+
+            $this->loadMigrations();
         }
 
         /**
@@ -138,6 +108,69 @@ class ServiceProvider extends BaseServiceProvider
             ->first();
     }
 
+    /**
+     * 导入数据库迁移配置
+     */
+    protected function loadMigrations()
+    {
+        // .stub 的迁移文件不会在 php artisan migrate 中出现
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        // 发布迁移文件（不管理日期）
+        // ---------------------
+        // 这方法可以批量发布整个目录的文件，
+        // 但是日期是固定的，而且要先设置好
+        // $this->publishes([
+        //     __DIR__.'/../database/migrations' => database_path('migrations'),
+        // ]);
+
+        // 发布迁移文件（自动自定日期为当前）
+        // ----------------------------
+        // 下面的两个配置其实是可以合并的，但是为了先创建权限表，所以才拆开
+
+        $arr = [];
+        foreach ([
+            // 为了保住能顺利排序，最好从 250000 之后开始
+            '300000_create_permission_extra_info.php',
+            '400000_create_backend_masters_table.php',
+            '500010_create_bans_table.php',
+            '500020_create_configures_table.php',
+        ] as $f) {
+            $arr[vsprintf('%s/../database/migrations/%s.stub',[__DIR__, $f])] = $this->getMigrationFileName($f);
+        }
+        $this->publishes($arr, 'bm-migrations');
+    }
+
+    /**
+     * 导入翻译
+     */
+    protected function loadTranslations()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../lang', AppConst::LANG_NAMESPACE);
+
+        if (app()->runningInConsole()) {
+
+            $this->publishes([
+                __DIR__.'/../lang' => app()->langPath('vendor/' . AppConst::LANG_NAMESPACE),
+            ], AppConst::LANG_NAMESPACE . '-lang');
+        }
+    }
+
+    protected function loadConfigs()
+    {
+        // 发布 配置文件
+        // ---------------
+        // (拷贝到 /app/config/ 目录)
+        $this->publishes([
+            __DIR__.'/../config/bm.php' => config_path('bm.php'),
+            __DIR__.'/../config/bm_roles.php' => config_path('bm_roles.php'),
+            __DIR__.'/../config/bm_masters.php' => config_path('bm_masters.php'),
+        ], 'bm-configs');
+    }
+
+    /**
+     * 导入 BM 的命令行命令
+     */
     protected function loadCommands()
     {
         // 用于注册命令行命令（手动填写的方式）
