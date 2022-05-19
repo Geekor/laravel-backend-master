@@ -6,12 +6,12 @@ use Illuminate\Support\Str;
 
 use Geekor\BackendMaster\Models\Role;
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
-use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
 use Geekor\Core\Support\GkApi;
 
 class RoleCreateTest extends TestAuthCase
 {
-    use AuthTokenCheck;
+    use AuthInvalidCheck;
 
     // 下面属性的更多说明可查看 /tests/Base/TestCase.php
 

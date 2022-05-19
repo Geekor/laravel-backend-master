@@ -3,11 +3,11 @@
 namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
-use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
 
 class MesterBrowseTest extends TestAuthCase
 {
-    use AuthTokenCheck;
+    use AuthInvalidCheck;
 
     // 下面属性的更多说明可查看 /tests/Base/TestCase.php
 
@@ -33,7 +33,7 @@ class MesterBrowseTest extends TestAuthCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_call_api_success()
+    public function test_call_api_by_browsing_masters_success()
     {
         $this->callApiByMasterUser($this->myTestingParams(), function($resp) {
             $resp->assertOk()->assertJsonStructure([

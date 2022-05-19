@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 trait InputCheck
 {
-    protected function checkRequestInput(Request $request, $validator)
+    protected function checkRequestInput(Request $request, array $validator)
     {
         $ret = GkVerify::checkRequestFailed($request, $validator);
         if ($ret['failed']) {
@@ -57,7 +57,7 @@ trait InputCheck
      * - 避免出现读取参数为 null 的问题
      * @return false 没有任何参数
      */
-    protected function getOptionInputs(Request $request, $keys=[])
+    protected function getOptionInputs(Request $request, array $keys=[])
     {
         $list = [];
 
@@ -74,7 +74,7 @@ trait InputCheck
      * 获取所有指定参数
      * @return false 缺少一个以上的参数
      */
-    protected function getAllInputs(Request $request, $keys=[])
+    protected function getAllInputs(Request $request, array $keys=[])
     {
         $list = [];
 

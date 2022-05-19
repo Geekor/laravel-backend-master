@@ -18,14 +18,6 @@ class MasterAuthTest extends TestCase
     const DEVICE_NAME = 'php-auto-test';
     const TESTING_API = '/api/backend/auth/login';
 
-    /**
-     * 访问一个不存在的 API
-     */
-    public function test_try_a_not_exists_api()
-    {
-        $this->get('/api/just-not-exists')->assertNotFound();
-    }
-
     /*
     |--------------------------------------------------------------------------
     | 登录测试

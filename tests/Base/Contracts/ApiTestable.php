@@ -1,14 +1,9 @@
 <?php
 
-namespace Geekor\BackendMaster\Tests\Base;
+namespace Geekor\BackendMaster\Tests\Base\Contracts;
 
 interface ApiTestable
 {
-    public function myFaker(): \Faker\Generator;
-
-    public function makeMasterUserAndToken($usePermission = false): array;
-    public function makeNormalUserAndToken($usePermission = false): array;
-
     public function isMasterGuard(): bool;
     public function isPermissionRequired(): bool;
     public function myDeviceName(): string;

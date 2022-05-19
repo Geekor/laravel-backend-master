@@ -5,11 +5,13 @@ namespace Geekor\BackendMaster\Tests\Feature\Backend;
 use Illuminate\Support\Str;
 
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
-use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthValidByMasterUser;
 
 class MesterCreateTest extends TestAuthCase
 {
-    use AuthTokenCheck;
+    use AuthInvalidCheck;
+    use AuthValidByMasterUser;
 
     // 下面属性的更多说明可查看 /tests/Base/TestCase.php
 

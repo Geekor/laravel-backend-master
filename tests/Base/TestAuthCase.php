@@ -10,16 +10,32 @@ use Tests\TestCase;
 
 use Geekor\BackendMaster\Models\Master;
 use Geekor\BackendMaster\Models\User;
-use Geekor\BackendMaster\Tests\Base\ApiTestable;
+use Geekor\BackendMaster\Tests\Base\Contracts\ApiTestable;
+use Geekor\BackendMaster\Tests\Base\Contracts\ApiUserMakable;
 
-class TestAuthCase extends TestCase implements ApiTestable
+class TestAuthCase extends TestCase implements ApiTestable, ApiUserMakable
 {
     use WithFaker;
 
-    public function myFaker(): \Faker\Generator
-    {
-        return $this->faker;
-    }
+    /** 用户登录时生成 TOKEN 需要的参数，用于表明是在哪台设备登录 */
+    protected $my_device_name = 'php-auto-test';
+
+    /** 标记当前测试 API 是管理员后台还是普通用户后台 */
+    protected $my_guard_is_master = true;
+
+    /** 标记当前 API 是否需要特定的角色/权限才能访问 */
+    protected $my_guard_need_permission = false;
+
+    /** 需要的特定角色/权限 */
+    protected $my_guard_roles = [];
+    protected $my_guard_permissions = [];
+
+    /** 当前测试的 API 信息 */
+    protected $my_testing_api = ''; // /api/backend/auth/info
+    protected $my_testing_method = ''; // get,post,put,delete
+    protected $my_testing_params = [];
+
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * 创建管理员并生成一个登录后的 token
@@ -28,11 +44,8 @@ class TestAuthCase extends TestCase implements ApiTestable
      */
     public function makeMasterUserAndToken($usePermission = null): array
     {
-        $user = null;
-        do {try { 
-            $user = Master::factory()->create(); break;
-        } catch (Exception $e) {}} while(true);
-            
+        $user = Master::factory()->create();
+
         if (is_null($usePermission)) {
             $usePermission = $this->isPermissionRequired();
         }
@@ -62,10 +75,7 @@ class TestAuthCase extends TestCase implements ApiTestable
      */
     public function makeNormalUserAndToken($usePermission = null): array
     {
-        $user = null;
-        do {try { 
-            $user = User::factory()->create(); break;
-        } catch (Exception $e) {}} while(true);
+        $user = User::factory()->create();
 
         if (is_null($usePermission)) {
             $usePermission = $this->isPermissionRequired();

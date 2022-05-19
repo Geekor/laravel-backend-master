@@ -3,11 +3,11 @@
 namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
-use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
 
 class MesterGetInfoTest extends TestAuthCase
 {
-    use AuthTokenCheck;
+    use AuthInvalidCheck;
 
     /** 用户登录时生成 TOKEN 需要的参数，用于表明是在哪台设备登录 */
     protected $my_device_name = 'php-auto-test';
@@ -31,7 +31,7 @@ class MesterGetInfoTest extends TestAuthCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_call_api_success()
+    public function test_call_of_getting_info_success()
     {
         $this->callApiByMasterUser($this->myTestingParams(), function($resp) {
             $resp->assertOk()->assertJsonStructure([

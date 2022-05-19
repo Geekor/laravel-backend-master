@@ -3,11 +3,13 @@
 namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
-use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthValidByMasterUser;
 
 class MesterLogoutTest extends TestAuthCase
 {
-    use AuthTokenCheck;
+    use AuthInvalidCheck;
+    use AuthValidByMasterUser;
 
     /** 用户登录时生成 TOKEN 需要的参数，用于表明是在哪台设备登录 */
     protected $my_device_name = 'php-auto-test';

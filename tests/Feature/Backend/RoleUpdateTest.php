@@ -4,12 +4,14 @@ namespace Geekor\BackendMaster\Tests\Feature\Backend;
 
 use Geekor\BackendMaster\Models\Role;
 use Geekor\BackendMaster\Tests\Base\TestAuthCase;
-use Geekor\BackendMaster\Tests\Feature\Traits\AuthTokenCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthInvalidCheck;
+use Geekor\BackendMaster\Tests\Base\Traits\AuthValidByMasterUser;
 use Geekor\Core\Support\GkApi;
 
 class RoleUpdateTest extends TestAuthCase
 {
-    use AuthTokenCheck;
+    use AuthInvalidCheck;
+    use AuthValidByMasterUser;
 
     // 下面属性的更多说明可查看 /tests/Base/TestCase.php
 
