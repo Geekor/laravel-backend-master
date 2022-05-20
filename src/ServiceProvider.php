@@ -2,9 +2,9 @@
 
 namespace Geekor\BackendMaster;
 
-use Illuminate\Filesystem\Filesystem;
 use App\Http\Kernel as AppKernel;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -196,7 +196,7 @@ class ServiceProvider extends BaseServiceProvider
         $path = __DIR__.$dir;
 
         // [1]
-        $fs = $this->app->make(Filesystem::class);
+        $fs = app()->make(Filesystem::class);
         $list = $fs->glob($path.'*.php');
 
         if (count($list) > 0) {

@@ -3,6 +3,8 @@
 namespace Geekor\BackendMaster\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 
 use Geekor\BackendMaster\Models\User;
@@ -12,6 +14,8 @@ use Geekor\Core\Support\GkVerify;
 
 class NormalAuthController extends BaseController
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     /**
      * 用户注册
      */

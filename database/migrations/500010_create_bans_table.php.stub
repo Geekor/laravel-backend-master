@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
  * 1. 新建 bans 表
  * 2. 在 users 表中拓展 ban_id 列
  */
-class CreateBansTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
