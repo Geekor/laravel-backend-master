@@ -282,6 +282,10 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function configureMiddleware()
     {
+        $routeMiddlewares = [
+            'bm.login' => Http\Middleware\AppAccessCheck::class
+        ];
+
         // Kernel 在 App 中是单例，
         // 通过 make() 实际只是取得单例。
         $kernel = app()->make(Kernel::class);
@@ -300,7 +304,24 @@ class ServiceProvider extends BaseServiceProvider
 
             // ----- 下面是要注册到 路由中间件列表
 
-            $kernel->appendToRouteMiddleware('bm.login', Http\Middleware\AppAccessCheck::class);
+            foreach ($routeMiddlewares as $key => $middleware) {
+                $kernel->appendToRouteMiddleware($key, $middleware);
+            }
+
+            // 下面的方法不起作用啊 ....
+            // $router = app('kernel');
+            // $router = app()->make(\Illuminate\Routing\Router::class);
+            // if (PHP_VERSION_ID >= 80000) {
+            //     // var_dump($router);
+            //     foreach ($routeMiddlewares as $key => $middleware) {
+            //         $router->aliasMiddleware($key, $middleware);
+            //     }
+            // } else {
+            //     foreach ($routeMiddlewares as $key => $middleware) {
+            //         $router->middleware($key, $middleware);
+            //     }
+            // }
+            // var_dump($kernel->getRouteMiddleware());
         }
 
     }

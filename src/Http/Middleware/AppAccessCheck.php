@@ -36,14 +36,15 @@ class AppAccessCheck
      */
     public function handle($request, Closure $next)
     {
-        // $this->doUserPermissionCheck('api', 'user:wapp-pet-login');
+        if (!config('bm.use_app_access_check', false)) {
+            return $next($request);
+        }
 
-        //...获取用户语言设置
         $app_mark = strtolower( $request->header('app-mark', '') );
-        if (config('bm.use_app_mark_check', false) && empty($app_mark)) {
+        if (empty($app_mark)) {
             throw new InputException(GkApi::API_PARAM_MISS, BM::tr('api.no_app_mark_in_headers'));
         }
-        //...TODO 过滤 app_mark 名 用 Arr::
+        //
         if (! Arr::has(self::APP_PERMISSION_MAP, $app_mark)) {
             throw new InputException(GkApi::API_PARAM_ERROR,
                 BM::tr('api.bad_app_mark_in_headers', ['app_mark' => $app_mark]

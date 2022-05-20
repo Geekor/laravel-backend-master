@@ -17,8 +17,10 @@ use Geekor\BackendMaster\Http\Controllers\Api\Auth\TokenController;
 | 那么如何获取 user guard 的 token？ 通过 users 表的 Model 生成 token;
 */
 
+$API_PREFIX = config('bm.prefix', 'backend');
+
 Route::group([
-    'prefix' => '/api/backend',
+    'prefix' => '/api/' . $API_PREFIX,
     'middleware' => ['auth:master', 'bm.login']
 ], function() {
 
