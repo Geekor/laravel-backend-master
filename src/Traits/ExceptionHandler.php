@@ -13,7 +13,7 @@ use Geekor\Core\Exceptions\PermissionException;
 use Geekor\Core\Exceptions\InputException;
 
 use BadMethodCallException;
-use Geekor\BackendMaster\AppConst as BM;
+use Geekor\BackendMaster\Consts as BM;
 use Throwable;
 
 trait ExceptionHandler

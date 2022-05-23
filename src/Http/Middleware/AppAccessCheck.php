@@ -3,7 +3,7 @@
 namespace Geekor\BackendMaster\Http\Middleware;
 
 use Closure;
-use Geekor\BackendMaster\AppConst as BM;
+use Geekor\BackendMaster\Consts as BM;
 use Geekor\BackendMaster\Models\Master;
 use Geekor\BackendMaster\Models\User;
 use Geekor\Core\Exceptions\InputException;

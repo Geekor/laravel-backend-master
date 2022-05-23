@@ -3,12 +3,12 @@
 namespace Geekor\BackendMaster;
 
 /**
- * use Geekor\BackendMaster\AppConst as BM;
+ * use Geekor\BackendMaster\Consts as BM;
  *
  * BM::tr('xxx');
  *
  */
-class AppConst
+class Consts
 {
     public const LANG_NAMESPACE = 'geekor-bm';
 

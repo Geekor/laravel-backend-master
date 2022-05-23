@@ -3,7 +3,7 @@
 namespace Geekor\BackendMaster\Http\Middleware;
 
 use Closure;
-use Geekor\BackendMaster\AppConst as BM;
+use Geekor\BackendMaster\Consts as BM;
 use Geekor\Core\Exceptions\InputException;
 use Geekor\Core\Support\GkApi;
 use Illuminate\Support\Arr;
@@ -46,7 +46,7 @@ class ApiHeadersCheck
                 ])
             );
         }
-        
+
         return $next($request);
     }
 
