@@ -8,6 +8,8 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
+use Geekor\BackendMaster\Consts;
+
 class ServiceProvider extends BaseServiceProvider
 {
     /**
@@ -148,7 +150,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function loadTranslations()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../lang', AppConst::LANG_NAMESPACE);
+        $this->loadTranslationsFrom(__DIR__.'/../lang', Consts::LANG_NAMESPACE);
 
         // TODO:
         //-------
@@ -157,8 +159,8 @@ class ServiceProvider extends BaseServiceProvider
         //
         // if (app()->runningInConsole()) {
         //     $this->publishes([
-        //         __DIR__.'/../lang' => app()->langPath('vendor/' . AppConst::LANG_NAMESPACE),
-        //     ], AppConst::LANG_NAMESPACE . '-lang');
+        //         __DIR__.'/../lang' => app()->langPath('vendor/' . Consts::LANG_NAMESPACE),
+        //     ], Consts::LANG_NAMESPACE . '-lang');
         // }
     }
 
