@@ -305,7 +305,7 @@ class ServiceProvider extends BaseServiceProvider
             // ----- 下面是要注册到 路由中间件列表
 
             if(! method_exists($kernel,'appendToRouteMiddleware')) {
-                echo('You need add `use \Geekor\BackendMaster\Traits\SettingRoutes;` in app\Http\Kernel.php');
+                echo('You need add (use \Geekor\BackendMaster\Traits\SettingRoutes;) in app\Http\Kernel.php');
 
             } else {
                 foreach ($routeMiddlewares as $key => $middleware) {

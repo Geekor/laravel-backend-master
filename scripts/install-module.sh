@@ -50,6 +50,13 @@ if [ ${RET} -eq 0 ]; then
     echo " "
 fi
 
+# ====
+
+if [ ${RET} -eq 0 ]; then
+    php artisan bm:check
+    RET=$?
+fi
+
 # ==== 执行数据库迁移 ====
 
 if [ ${RET} -eq 0 ]; then
