@@ -14,20 +14,6 @@ use Illuminate\Support\Arr;
 class AppAccessCheck
 {
     /**
-     * app-mark => 权限
-     * -------------
-     * w-x   web app
-     * a-x   android app
-     * i-x   ios app
-     */
-    const APP_PERMISSION_MAP = [
-        'w-sti' => 'master:wapp-master-login',
-
-        'w-pets' => '',
-        'a-pets' => '',
-    ];
-
-    /**
      * 用于 APP 登录权限管理
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,8 +30,10 @@ class AppAccessCheck
         if (empty($app_mark)) {
             throw new InputException(GkApi::API_PARAM_MISS, BM::tr('api.no_app_mark_in_headers'));
         }
+
         //
-        if (! Arr::has(self::APP_PERMISSION_MAP, $app_mark)) {
+        $access_permission_map = config('bm.app_access_permission', []);
+        if (! Arr::has($access_permission_map, $app_mark)) {
             throw new InputException(GkApi::API_PARAM_ERROR,
                 BM::tr('api.bad_app_mark_in_headers', ['app_mark' => $app_mark]
             ));
@@ -57,7 +45,7 @@ class AppAccessCheck
             throw new PermissionException('??? have not setting token check ??');
         }
 
-        $needed_permission = Arr::get(self::APP_PERMISSION_MAP, $app_mark);
+        $needed_permission = Arr::get($access_permission_map, $app_mark);
         if (empty($needed_permission)) {
             return $next($request);
         }
