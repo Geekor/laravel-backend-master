@@ -31,7 +31,7 @@ class RoleUpdateTest extends TestAuthCase
     protected $my_testing_method = 'put';
     protected $my_testing_params = [
         'title' => '普通用户',
-        'level' => 10,
+        'level' => 1,
         'description' => '测试修改'
     ];
 

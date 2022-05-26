@@ -43,7 +43,6 @@ return [
 
     'roles' => [
         'user'         => [ 'guard_name' => 'user', 'removable' => 0, 'level' => 1,    'title' => '用户',   'description' => '普通（仅可浏览）用户' ],
-        'tester'       => [ 'guard_name' => 'user', 'removable' => 0, 'level' => 5,    'title' => '测试员', 'description' => '普通（仅可浏览）用户-内部测试员' ],
         'member'       => [ 'guard_name' => 'user', 'removable' => 0, 'level' => 10,   'title' => '会员',   'description' => '可以发表动态的用户' ],
         'author'       => [ 'guard_name' => 'user', 'removable' => 0, 'level' => 100,  'title' => '作者',   'description' => '可以发布文章的用户' ],
         'spokesman'    => [ 'guard_name' => 'user', 'removable' => 0, 'level' => 900,  'title' => '发言人', 'description' => '可以管理话题的用户，官方发言人' ],
@@ -61,43 +60,21 @@ return [
         'data_master'  => [
             'master:data-*',
             'master:article-*',
-            'master:event-*',
-            'master:topic-*',
             'master:backend-login',
         ],
 
         // 普通用户
         'spokesman' => [
-            'user:event-*',
             'user:article-*',
-            'user:topic-*',
         ],
         'author'    => [
-            'user:event-*',
             'user:article-*',
-            'user:topic-*',
         ],
         'member'    => [
-            'user:event-*',
-
-            'user:topic-b',
-            'user:topic-r',
-            'user:article-b',
-            'user:article-r',
-        ],
-        'tester'    => [
-            'user:event-b',
-            'user:event-r',
-            'user:topic-b',
-            'user:topic-r',
             'user:article-b',
             'user:article-r',
         ],
         'user'      => [
-            'user:event-b',
-            'user:event-r',
-            'user:topic-b',
-            'user:topic-r',
             'user:article-b',
             'user:article-r',
         ],
