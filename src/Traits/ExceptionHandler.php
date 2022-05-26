@@ -71,7 +71,6 @@ trait ExceptionHandler
         }
 
         // --------------------------------- 未知错误 ---
-        // dd($e);
         if (config('app.env') === 'production') {
             $fn = explode('/', $e->getFile());
             if (count($fn) > 4) {
@@ -85,6 +84,8 @@ trait ExceptionHandler
                 'line' => $e->getLine() ?? '0'
 
             ], 500);
+        } else {
+            dd($e);
         }
     }
 }
