@@ -10,7 +10,7 @@ trait ApiPrefixUtil
     {
         // $bm = Collection::make($this->app->configPath().DIRECTORY_SEPARATOR.'bm.php');
         if (empty($this->config)) {
-            $this->config = $this->app->make('config');
+            $this->config = resolve('config'); // resolve() == $app->make()
         }
 
         if ($this->config['bm.prefix'] === 'backend') {

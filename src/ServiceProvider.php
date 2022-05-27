@@ -4,11 +4,11 @@ namespace Geekor\BackendMaster;
 
 use App\Http\Kernel as AppKernel;
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 use Geekor\BackendMaster\Consts;
+use Illuminate\Support\Str;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -102,11 +102,10 @@ class ServiceProvider extends BaseServiceProvider
     {
         $timestamp = date('Y_m_d');
 
-        $filesystem = $this->app->make(Filesystem::class);
 
         return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
-            ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
-                return $filesystem->glob($path.'*_'.$migrationFileName);
+            ->flatMap(function ($path) use ($migrationFileName) {
+                return glob($path.'*_'.$migrationFileName);
             })
             ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
             ->first();
@@ -198,8 +197,7 @@ class ServiceProvider extends BaseServiceProvider
         $path = __DIR__.$dir;
 
         // [1]
-        $fs = app()->make(Filesystem::class);
-        $list = $fs->glob($path.'*.php');
+        $list = glob($path.'*.php');
 
         if (count($list) > 0) {
             $cmds = [];
@@ -207,8 +205,7 @@ class ServiceProvider extends BaseServiceProvider
 
             // [2]
             foreach ($list as $txt) {
-                $tmp = substr($txt, strrpos($txt, '/')+1);
-                $tmp = substr($tmp, 0, strrpos($tmp, '.'));
+                $tmp = Str::before(Str::of($txt)->afterLast('/'), '.');
                 $cmds[] = vsprintf('%s%s%s', [
                     __NAMESPACE__,
                     str_replace('/', '\\', $dir),
@@ -290,7 +287,7 @@ class ServiceProvider extends BaseServiceProvider
 
         // Kernel 在 App 中是单例，
         // 通过 make() 实际只是取得单例。
-        $kernel = app()->make(Kernel::class);
+        $kernel = resolve(Kernel::class);
 
         if ($kernel instanceof AppKernel) {
 
